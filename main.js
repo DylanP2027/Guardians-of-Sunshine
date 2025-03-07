@@ -10,7 +10,7 @@ let config = {
     width: 1024,
     height: 768,
     pixelArt: true,
-    zoom: 2,
+    zoom: 1,
     physics: {
       default: "arcade",
       arcade: {
@@ -22,7 +22,7 @@ let config = {
   
   let game = new Phaser.Game(config) // Sets up the new phaser game.
   
-  let keyJUMP, keyLEFT, keyRIGHT, keyABILITY, keyATTACK, keyDanceUP, keyDanceDOWN, keyDanceRIGHT, keyDanceLEFT // Reserved keyboard bindings.
+  let keyUP, keyLEFT, keyRIGHT, keyABILITY, keyATTACK, keyDanceUP, keyDanceDOWN, keyDanceRIGHT, keyDanceLEFT // Reserved keyboard bindings.
   
   // Sets the UI size
   let borderUISize = game.config.height / 15

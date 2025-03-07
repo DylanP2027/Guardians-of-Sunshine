@@ -1,4 +1,4 @@
-class Credits extends Phaser.Scene {
+class Win extends Phaser.Scene {
     constructor() {
         super("winScreen") // Basically gives names the key to this object menuScene
     }

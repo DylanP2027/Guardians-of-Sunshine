@@ -1,4 +1,4 @@
-class Controls extends Phaser.Scene {
+class CurrentLevel extends Phaser.Scene {
     constructor() {
         super("currentLevelScene") // Basically gives names the key to this object menuScene
     }
