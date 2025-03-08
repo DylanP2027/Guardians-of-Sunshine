@@ -10,9 +10,12 @@ class Play extends Phaser.Scene {
 
     create() {
         // Defines control for this scene
-        keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
+
         // keyRESET = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
-        keyJUMP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
+
+        keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
+        keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
+        keyJUMP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP)
 
         // Sound effect for returning back to the main menu
 
@@ -31,12 +34,16 @@ class Play extends Phaser.Scene {
         //draw in temp map
         const bgLayer = map.createLayer('Tile Layer 1', tileset, 0, 0)
 
+        bgLayer.setCollisionByProperty({collides: true})
+
         //move to spawn location
         const playerSpawn = map.findObject('PlayerSpawn', (obj) => obj.name === 'playerSpawn')
         
         //add player sprite
-        const stick = this.add.sprite(playerSpawn.x, (playerSpawn.y / 1.5 + 5), 'stickman').setOrigin(0).setScale(2)
+        const stick = new Stickman(this, playerSpawn.x, (playerSpawn.y / 1.5 + 5), 'stickman', 0).setOrigin(0).setScale(2)
         stick.anims.play('stickman-walk')
+
+        
 
 
     }
