@@ -41,9 +41,9 @@ class Play extends Phaser.Scene {
         
         //add player sprite
         const stick = new Stickman(this, playerSpawn.x, (playerSpawn.y / 1.5 + 5), 'stickman', 0).setOrigin(0).setScale(2)
-        stick.anims.play('stickman-walk')
+        stick.anims.play('stickman-idle')
 
-        
+        this.physics.add.collider(stick, bgLayer)
 
 
     }
