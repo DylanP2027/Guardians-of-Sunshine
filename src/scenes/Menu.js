@@ -30,6 +30,10 @@ class Menu extends Phaser.Scene {
         // Load Current Level Scene
         this.load.image('currentLevel', 'level1.png');
 
+        // Load for Play.js
+        this.load.image('tilesetImage', './assets/BasicTileset.png')
+        this.load.tilemapTiledJSON('tilemapJSON', 'GuardiansOfSunshine.json')
+
         // Load enemies
         this.load.image('sleepySam', 'sleepySam.png');
         this.load.image('hunnyBunny', 'hunnyBunny.png');
