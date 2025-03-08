@@ -124,9 +124,9 @@ class Menu extends Phaser.Scene {
 
             // Background Music
             this.gameMusic = this.sound.add('gameMusic');
-            this.gameMusic.volume = 0.1;
+            this.gameMusic.volume = 0.15;
             this.gameMusic.loop = true;
-            //this.gameMusic.play();
+            this.gameMusic.play();
             this.registry.set('gameMusic', this.gameMusic); // Store in registry
         }
 

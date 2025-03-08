@@ -26,17 +26,20 @@ class Play extends Phaser.Scene {
         // Add player sprite
         this.stick = new Stickman(this, playerSpawn.x, (playerSpawn.y / 1.5 + 5), 'stickman', 0, keyLEFT, keyRIGHT, keyJUMP).setScale(2);
         this.stick.anims.play('stickman-idle');
-
+    
         // Collisions
         this.physics.add.collider(this.stick, bgLayer);
 
-    
+
         // TEMP: Spawns BouncyBee
         const bouncyBeeSpawn = map.findObject('BouncyBeeSpawn', (obj) => obj.name === 'bouncyBeeSpawn');
 
         this.bouncyBee = this.physics.add.sprite(game.config.width/1.75, (playerSpawn.y / 1.5 + 5), 'bouncyBee').setScale(2)
         this.physics.add.collider(this.bouncyBee, bgLayer);
+
+        this.physics.add.collider(this.bouncyBee, this.stick, this.handlePlayerHit, null, this)
     }
+
     
     
 
@@ -46,5 +49,10 @@ class Play extends Phaser.Scene {
             this.stick.update();
         }
     }
-        
+
+    handlePlayerHit(stick, bouncyBee) {
+        this.scene.start('gameOverScene') // Switch scene when collision happens
+    }
+
 }
+        
