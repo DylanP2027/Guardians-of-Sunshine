@@ -7,34 +7,49 @@ class Menu extends Phaser.Scene {
     }
 
     preload() {
+        this.load.path = './assets/';
+
         // Load Main Menu spritesheet
-        this.load.spritesheet('mainMenuSpriteSheet', './assets/mainMenu.png', {
+        this.load.spritesheet('mainMenuSpriteSheet', 'mainMenu.png', {
             frameWidth: 1920,
             frameHeight: 1080,
             startFrame: 0,
             endFrame: 1
         });
 
+        // Load stickman atlas
+        this.load.atlas('stickman', 'stickman.png', 'stickman.json')
+
         // Load GameOver Screen
-        this.load.image('youLose', './assets/youLose.png');
-        this.load.audio('gameOverSound', './assets/gameOverSound.mp3')
+        this.load.image('youLose', 'youLose.png');
+        this.load.audio('gameOverSound', 'gameOverSound.mp3')
 
         // Load Win Screen (Fixed the key name)
-        this.load.image('youWin', './assets/youWin.png');
+        this.load.image('youWin', 'youWin.png');
 
         // Load Current Level Scene
-        this.load.image('currentLevel', './assets/level1.png');
+        this.load.image('currentLevel', 'level1.png');
 
         // Load enemies
-        this.load.image('sleepySam', './assets/sleepySam.png');
-        this.load.image('hunnyBunny', './assets/hunnyBunny.png');
-        this.load.image('bouncyBee', './assets/bouncyBee.png');
+        this.load.image('sleepySam', 'sleepySam.png');
+        this.load.image('hunnyBunny', 'hunnyBunny.png');
+        this.load.image('bouncyBee', 'bouncyBee.png');
 
         // Load audio
-        this.load.audio('gameMusic', './assets/gameMusic.mp3');
+        this.load.audio('gameMusic', 'gameMusic.mp3');
     }
 
     create() {
+        this.anims.create({
+            key: 'stickman-idle',
+            frames: this.anims.generateFrameNames('stickman',{prefix: 'idle', start: 0, end: 3}),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        const stick = this.add.sprite(400, 300, 'stickman')
+        stick.anims.play('stickman-idle')
+
         if(enteredMenuScene != true) {
 
             enteredMenuScene = true; // Flags the event
