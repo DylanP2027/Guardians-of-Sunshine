@@ -1,30 +1,36 @@
 class Stickman extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, x, y, texture, frame){
-        super(scene, x, y, texture, frame)
+    constructor(scene, x, y, texture, frame, keyLEFT, keyRIGHT, keyJUMP) {
+        super(scene, x, y, texture, frame);
 
-        scene.add.existing(this)
-        scene.physics.add.existing(this)
+        // Add stickman to scene
+        scene.add.existing(this);
+        scene.physics.add.existing(this);
+        this.body.setCollideWorldBounds(true);
 
-        this.body.setCollideWorldBounds(true)
+        // Store key inputs
+        this.keyLEFT = keyLEFT;
+        this.keyRIGHT = keyRIGHT;
+        this.keyJUMP = keyJUMP;
 
-        this.maxSpeed = 300
-        this.maxJumpSpeed = 5000
+        this.maxSpeed = 150;
+        this.maxJumpSpeed = 300;
     }
 
-    update(){
-        if(Phaser.Input.Keyboard.JustDown(this.keyLEFT)) {
-            this.stick.setVelocityX(-this.MAX_VELOCITY)
-            //this.stick.setFlip(true, false)
-            //this.stick.anims.play('walk', true)
-        } else if(Phaser.Input.Keyboard.JustDown(this.keyRIGHT)) {
-            this.stick.setVelocityX(this.MAX_VELOCITY)
-            //this.stick.resetFlip()
-            //this.stick.anims.play('walk', true)
-        } else if (Phaser.Input.Keyboard.JustDown(this.keyRIGHT) && Phaser.Input.Keyboard.JustDown(this.keyLEFT)) {
-            this.stick.setVelocityX(0)
-        } else if(this.stick.body.touching.down && Phaser.Input.Keyboard.JustDown(this.keyJUMP)) {
-            this.stick.body.setVelocityY(this.JUMP_VELOCITY);
-            //this.stick.anims.play('idle')
+    update() {
+        // Left and right movement
+        if (this.keyLEFT.isDown) {
+            this.setVelocityX(-this.maxSpeed);
+        } else if (this.keyRIGHT.isDown) {
+            this.setVelocityX(this.maxSpeed);
+        } else {
+            this.setVelocityX(0); // Stop moving when no keys are pressed
+        }
+    
+        // Jumping
+        if (this.keyJUMP.isDown && this.body.blocked.down) {
+            this.setVelocityY(-this.maxJumpSpeed); // Apply upward force
         }
     }
+    
+    
 }
