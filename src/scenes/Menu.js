@@ -51,7 +51,57 @@ class Menu extends Phaser.Scene {
             repeat: -1,
         });
 
+        this.anims.create({
+            key: 'stickman-walk',
+            frames: this.anims.generateFrameNames('stickman',{prefix: 'walk', start: 0, end:1}),
+            frameRate: 2,
+            repeat: -1,
+        });
 
+        this.anims.create({
+            key: 'stickman-jump',
+            frames: this.anims.generateFrameNames('stickman',{prefix: 'jump', start: 0, end:6}),
+            frameRate: 1,
+            repeat: 0,
+        });
+        
+        //used only if performing another jump before jump animation returns to idle
+        this.anims.create({
+            key: 'stickman-rejump',
+            frames: this.anims.generateFrameNames('stickman',{prefix: 'rejump', start: 0, end:0}),
+            frameRate: 1,
+            repeat: 0,
+        });
+
+        //used when in a combat sequence but not performing one of the moves
+        this.anims.create({
+            key: 'stickman-battle',
+            frames: this.anims.generateFrameNames('stickman',{prefix: 'battle', start: 0, end:0}),
+            frameRate: 1,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'stickman-punch',
+            frames: this.anims.generateFrameNames('stickman',{prefix: 'punch', start: 0, end:2}),
+            frameRate: 3,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'stickman-kick',
+            //kick4 extra frame
+            frames: this.anims.generateFrameNames('stickman',{prefix: 'kick', start: 0, end:3}),
+            frameRate: 4,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'stickman-bomb',
+            frames: this.anims.generateFrameNames('stickman',{prefix: 'bomb', start: 0, end:10}),
+            frameRate: 2,
+            repeat: -1,
+        });
 
         if(enteredMenuScene != true) {
 
