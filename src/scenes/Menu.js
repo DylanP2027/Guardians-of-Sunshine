@@ -42,13 +42,13 @@ class Menu extends Phaser.Scene {
     create() {
         this.anims.create({
             key: 'stickman-idle',
-            frames: this.anims.generateFrameNames('stickman',{prefix: 'idle', start: 0, end: 3}),
-            frameRate: 5,
+            frames: this.anims.generateFrameNames('stickman',{prefix: 'idle', start: 0, end:3}),
+            frameRate: 3,
             repeat: -1,
         });
 
-        const stick = this.add.sprite(400, 300, 'stickman')
-        stick.anims.play('stickman-idle')
+        // const stick = this.add.sprite(400, 300, 'stickman')
+        // stick.anims.play('stickman-idle')
 
         if(enteredMenuScene != true) {
 
