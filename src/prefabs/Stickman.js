@@ -7,28 +7,37 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
         this.body.setCollideWorldBounds(true);
 
-        // Store key inputs
-        this.keyLEFT = keyLEFT;
-        this.keyRIGHT = keyRIGHT;
-        this.keyJUMP = keyJUMP;
-
         this.maxSpeed = 150;
         this.maxJumpSpeed = 300;
     }
 
     update() {
         // Left and right movement
-        if (this.keyLEFT.isDown) {
+        if (keyLEFT.isDown) {
             this.setVelocityX(-this.maxSpeed);
-        } else if (this.keyRIGHT.isDown) {
+            this.setFlipX(true)
+
+            if (this.anims.currentAnim.key !== 'stickman-walk' || !this.anims.isPlaying) {
+                this.anims.play('stickman-walk');
+            }
+            
+        } else if (keyRIGHT.isDown) {
             this.setVelocityX(this.maxSpeed);
+            this.resetFlip(true)
+
+            if (this.anims.currentAnim.key !== 'stickman-walk' || !this.anims.isPlaying) {
+                this.anims.play('stickman-walk');
+            }
+
         } else {
             this.setVelocityX(0); // Stop moving when no keys are pressed
+            this.anims.stop()
         }
     
         // Jumping
-        if (this.keyJUMP.isDown && this.body.blocked.down) {
+        if (keyJUMP.isDown && this.body.blocked.down) {
             this.setVelocityY(-this.maxJumpSpeed); // Apply upward force
+            this.anims.play('stickman-jump');
         }
     }
     

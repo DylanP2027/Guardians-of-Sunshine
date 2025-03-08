@@ -52,6 +52,13 @@ class Menu extends Phaser.Scene {
         });
 
         this.anims.create({
+            key: 'stickman-idle-stand',
+            frames: this.anims.generateFrameNames('stickman',{prefix: 'idle', start: 3, end:3}),
+            frameRate: 1,
+            repeat: -1,
+        });
+
+        this.anims.create({
             key: 'stickman-walk',
             frames: this.anims.generateFrameNames('stickman',{prefix: 'walk', start: 0, end:1}),
             frameRate: 2,
@@ -61,7 +68,7 @@ class Menu extends Phaser.Scene {
         this.anims.create({
             key: 'stickman-jump',
             frames: this.anims.generateFrameNames('stickman',{prefix: 'jump', start: 0, end:6}),
-            frameRate: 1,
+            frameRate: 7,
             repeat: 0,
         });
         
