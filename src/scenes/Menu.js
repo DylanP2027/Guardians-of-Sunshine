@@ -17,6 +17,7 @@ class Menu extends Phaser.Scene {
 
         // Load GameOver Screen
         this.load.image('youLose', './assets/youLose.png');
+        this.load.audio('gameOverSound', './assets/gameOverSound.mp3')
 
         // Load Win Screen (Fixed the key name)
         this.load.image('youWin', './assets/youWin.png');
@@ -51,6 +52,7 @@ class Menu extends Phaser.Scene {
             this.gameMusic.volume = 0.1;
             this.gameMusic.loop = true;
             this.gameMusic.play();
+            this.registry.set('gameMusic', this.gameMusic); // Store in registry
         }
 
         // Create the main menu sprite and position it at the center
@@ -68,11 +70,16 @@ class Menu extends Phaser.Scene {
 
         // Define keys for menu navigation
         this.keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+        this.keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
     }
 
     update() {
         if (Phaser.Input.Keyboard.JustDown(this.keyUP)) {
             this.scene.start('currentLevelScene');
+            // this.menuSelectionSound.play();
+        }
+        if (Phaser.Input.Keyboard.JustDown(this.keyDOWN)) {
+            this.scene.start('gameOverScene');
             // this.menuSelectionSound.play();
         }
     }
