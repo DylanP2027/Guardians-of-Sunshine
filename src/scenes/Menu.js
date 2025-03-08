@@ -30,8 +30,8 @@ class Menu extends Phaser.Scene {
         // Load Current Level Scene
         this.load.image('currentLevel', 'level1.png');
 
-        // Load for Play.js
-        this.load.image('tilesetImage', './assets/BasicTileset.png')
+        // Load for map
+        this.load.image('tilesetImage', 'BasicTileset.png')
         this.load.tilemapTiledJSON('tilemapJSON', 'GuardiansOfSunshine.json')
 
         // Load enemies
@@ -51,8 +51,7 @@ class Menu extends Phaser.Scene {
             repeat: -1,
         });
 
-        // const stick = this.add.sprite(400, 300, 'stickman')
-        // stick.anims.play('stickman-idle')
+
 
         if(enteredMenuScene != true) {
 
