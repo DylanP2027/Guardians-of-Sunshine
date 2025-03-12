@@ -25,7 +25,6 @@ class Play extends Phaser.Scene {
     
         // Add player sprite
         this.stick = new Stickman(this, playerSpawn.x, (playerSpawn.y / 1.5 + 5), 'stickman', 0, keyLEFT, keyRIGHT, keyJUMP).setScale(2);
-        this.stick.body.setSize(14,22)
         this.stick.anims.play('stickman-idle');
     
         // Collisions

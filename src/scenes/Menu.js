@@ -18,7 +18,7 @@ class Menu extends Phaser.Scene {
         });
 
         // Load stickman atlas
-        this.load.atlas('stickman', 'stick.png', 'stick.json')
+        this.load.atlas('stickman', 'stickman.png', 'stickman.json')
         this.load.atlas('bomb', 'bomb.png', 'bomb.json')
 
         // Load GameOver Screen
