@@ -18,7 +18,8 @@ class Menu extends Phaser.Scene {
         });
 
         // Load stickman atlas
-        this.load.atlas('stickman', 'stickman.png', 'stickman.json')
+        this.load.atlas('stickman', 'stick.png', 'stick.json')
+        this.load.atlas('bomb', 'bomb.png', 'bomb.json')
 
         // Load GameOver Screen
         this.load.image('youLose', 'youLose.png');
@@ -68,7 +69,7 @@ class Menu extends Phaser.Scene {
         this.anims.create({
             key: 'stickman-jump',
             frames: this.anims.generateFrameNames('stickman',{prefix: 'jump', start: 0, end:6}),
-            frameRate: 7,
+            frameRate: 8,
             repeat: 0,
         });
         
@@ -105,7 +106,7 @@ class Menu extends Phaser.Scene {
 
         this.anims.create({
             key: 'stickman-bomb',
-            frames: this.anims.generateFrameNames('stickman',{prefix: 'bomb', start: 0, end:10}),
+            frames: this.anims.generateFrameNames('bomb',{prefix: 'bomb', start: 0, end:10}),
             frameRate: 2,
             repeat: -1,
         });

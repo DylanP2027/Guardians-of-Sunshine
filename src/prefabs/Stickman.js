@@ -31,19 +31,19 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
 
         } else {
             this.setVelocityX(0); // Stop moving when no keys are pressed
-            this.anims.stop()
 
             //temp idle, want to implement a timer that switches to an idle animation later
-            this.setFrame('idle3')
+            
         
         }
     
         // Jumping
-        if (keyJUMP.isDown && this.body.blocked.down) {
+        if (Phaser.Input.Keyboard.JustDown(keyJUMP) && this.body.blocked.down) {
             this.setVelocityY(-this.maxJumpSpeed); // Apply upward force
             this.anims.play('stickman-jump');
         }
+
+//check for when move and jump (check when grounded, animation of walk precedence over jump) 
     }
-    
     
 }

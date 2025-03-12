@@ -5,7 +5,7 @@ class Play extends Phaser.Scene {
 
     init() {
         // Value of Gravity
-        this.physics.world.gravity.y = 1800
+        this.physics.world.gravity.y = 1000
     }
 
     create() {
@@ -25,6 +25,7 @@ class Play extends Phaser.Scene {
     
         // Add player sprite
         this.stick = new Stickman(this, playerSpawn.x, (playerSpawn.y / 1.5 + 5), 'stickman', 0, keyLEFT, keyRIGHT, keyJUMP).setScale(2);
+        this.stick.body.setSize(14,22)
         this.stick.anims.play('stickman-idle');
     
         // Collisions
@@ -32,7 +33,7 @@ class Play extends Phaser.Scene {
 
 
         // TEMP: Spawns BouncyBee
-        const bouncyBeeSpawn = map.findObject('BouncyBeeSpawn', (obj) => obj.name === 'bouncyBeeSpawn');
+        const bouncyBeeSpawn = map.findObject('BouncyBee', (obj) => obj.name === 'bouncyBeeSpawn');
 
         this.bouncyBee = this.physics.add.sprite(game.config.width/1.75, (playerSpawn.y / 1.5 + 5), 'bouncyBee').setScale(2)
         this.physics.add.collider(this.bouncyBee, bgLayer);

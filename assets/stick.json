@@ -1,0 +1,474 @@
+{
+    "frames": {
+        "idle0": {
+            "frame": {
+                "x": 1,
+                "y": 24,
+                "w": 14,
+                "h": 22
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 14,
+                "h": 22
+            },
+            "sourceSize": {
+                "w": 14,
+                "h": 22
+            }
+        },
+        "idle2": {
+            "frame": {
+                "x": 49,
+                "y": 24,
+                "w": 14,
+                "h": 22
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 14,
+                "h": 22
+            },
+            "sourceSize": {
+                "w": 14,
+                "h": 22
+            }
+        },
+        "jump0": {
+            "frame": {
+                "x": 73,
+                "y": 24,
+                "w": 15,
+                "h": 22
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 15,
+                "h": 22
+            },
+            "sourceSize": {
+                "w": 15,
+                "h": 22
+            }
+        },
+        "punch0": {
+            "frame": {
+                "x": 121,
+                "y": 24,
+                "w": 14,
+                "h": 22
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 14,
+                "h": 22
+            },
+            "sourceSize": {
+                "w": 14,
+                "h": 22
+            }
+        },
+        "idle1": {
+            "frame": {
+                "x": 25,
+                "y": 26,
+                "w": 14,
+                "h": 20
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 14,
+                "h": 20
+            },
+            "sourceSize": {
+                "w": 14,
+                "h": 20
+            }
+        },
+        "jump2": {
+            "frame": {
+                "x": 99,
+                "y": 26,
+                "w": 11,
+                "h": 20
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 11,
+                "h": 20
+            },
+            "sourceSize": {
+                "w": 11,
+                "h": 20
+            }
+        },
+        "kick0": {
+            "frame": {
+                "x": 145,
+                "y": 28,
+                "w": 8,
+                "h": 18
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 8,
+                "h": 18
+            },
+            "sourceSize": {
+                "w": 8,
+                "h": 18
+            }
+        },
+        "idle3": {
+            "frame": {
+                "x": 4,
+                "y": 70,
+                "w": 8,
+                "h": 22
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 8,
+                "h": 22
+            },
+            "sourceSize": {
+                "w": 8,
+                "h": 22
+            }
+        },
+        "walk0": {
+            "frame": {
+                "x": 28,
+                "y": 70,
+                "w": 8,
+                "h": 22
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 8,
+                "h": 22
+            },
+            "sourceSize": {
+                "w": 8,
+                "h": 22
+            }
+        },
+        "walk1": {
+            "frame": {
+                "x": 51,
+                "y": 70,
+                "w": 11,
+                "h": 22
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 11,
+                "h": 22
+            },
+            "sourceSize": {
+                "w": 11,
+                "h": 22
+            }
+        },
+        "jump1": {
+            "frame": {
+                "x": 72,
+                "y": 70,
+                "w": 16,
+                "h": 22
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 22
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 22
+            }
+        },
+        "punch1": {
+            "frame": {
+                "x": 121,
+                "y": 70,
+                "w": 15,
+                "h": 22
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 15,
+                "h": 22
+            },
+            "sourceSize": {
+                "w": 15,
+                "h": 22
+            }
+        },
+        "kick1": {
+            "frame": {
+                "x": 144,
+                "y": 71,
+                "w": 12,
+                "h": 21
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 12,
+                "h": 21
+            },
+            "sourceSize": {
+                "w": 12,
+                "h": 21
+            }
+        },
+        "jump3": {
+            "frame": {
+                "x": 98,
+                "y": 73,
+                "w": 13,
+                "h": 19
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 13,
+                "h": 19
+            },
+            "sourceSize": {
+                "w": 13,
+                "h": 19
+            }
+        },
+        "jump5": {
+            "frame": {
+                "x": 26,
+                "y": 116,
+                "w": 13,
+                "h": 22
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 13,
+                "h": 22
+            },
+            "sourceSize": {
+                "w": 13,
+                "h": 22
+            }
+        },
+        "jump6": {
+            "frame": {
+                "x": 51,
+                "y": 116,
+                "w": 11,
+                "h": 22
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 11,
+                "h": 22
+            },
+            "sourceSize": {
+                "w": 11,
+                "h": 22
+            }
+        },
+        "battle0": {
+            "frame": {
+                "x": 97,
+                "y": 116,
+                "w": 10,
+                "h": 22
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 10,
+                "h": 22
+            },
+            "sourceSize": {
+                "w": 10,
+                "h": 22
+            }
+        },
+        "punch2": {
+            "frame": {
+                "x": 121,
+                "y": 116,
+                "w": 16,
+                "h": 22
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 22
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 22
+            }
+        },
+        "kick2": {
+            "frame": {
+                "x": 144,
+                "y": 117,
+                "w": 14,
+                "h": 21
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 14,
+                "h": 21
+            },
+            "sourceSize": {
+                "w": 14,
+                "h": 21
+            }
+        },
+        "jump4": {
+            "frame": {
+                "x": 0,
+                "y": 121,
+                "w": 17,
+                "h": 17
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 17,
+                "h": 17
+            },
+            "sourceSize": {
+                "w": 17,
+                "h": 17
+            }
+        },
+        "rejump0": {
+            "frame": {
+                "x": 72,
+                "y": 121,
+                "w": 12,
+                "h": 17
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 12,
+                "h": 17
+            },
+            "sourceSize": {
+                "w": 12,
+                "h": 17
+            }
+        },
+        "kick3": {
+            "frame": {
+                "x": 0,
+                "y": 163,
+                "w": 13,
+                "h": 21
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 13,
+                "h": 21
+            },
+            "sourceSize": {
+                "w": 13,
+                "h": 21
+            }
+        },
+        "kick4": {
+            "frame": {
+                "x": 24,
+                "y": 163,
+                "w": 13,
+                "h": 21
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 13,
+                "h": 21
+            },
+            "sourceSize": {
+                "w": 13,
+                "h": 21
+            }
+        }
+    },
+    "meta": {
+        "app": "https://www.leshylabs.com/apps/sstool/",
+        "version": "Leshy SpriteSheet Tool v0.8.4",
+        "image": "stick.png",
+        "size": {
+            "w": 216,
+            "h": 184
+        },
+        "scale": 1
+    }
+}
