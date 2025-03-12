@@ -7,7 +7,8 @@ class Menu extends Phaser.Scene {
     }
 
     preload() {
-        this.load.path = './assets/';
+        // Load UI
+        this.load.path = './assets/UI/';
 
         // Load Main Menu spritesheet
         this.load.spritesheet('mainMenuSpriteSheet', 'mainMenu.png', {
@@ -17,31 +18,41 @@ class Menu extends Phaser.Scene {
             endFrame: 1
         });
 
-        // Load stickman atlas
-        this.load.atlas('stickman', 'stickman.png', 'stickman.json')
-        this.load.atlas('bomb', 'bomb.png', 'bomb.json')
-
-        // Load GameOver Screen
-        this.load.image('youLose', 'youLose.png');
-        this.load.audio('gameOverSound', 'gameOverSound.mp3')
-
         // Load Win Screen (Fixed the key name)
         this.load.image('youWin', 'youWin.png');
 
         // Load Current Level Scene
         this.load.image('currentLevel', 'level1.png');
 
+        // Load GameOver Screen
+        this.load.image('youLose', 'youLose.png');
+
+        // Load Audio
+        this.load.path = './assets/sfx/';
+        this.load.audio('gameOverSound', 'gameOverSound.mp3')
+        this.load.audio('gameMusic', 'gameMusic.mp3');
+
         // Load for map
-        this.load.image('tilesetImage', 'BasicTileset.png')
-        this.load.tilemapTiledJSON('tilemapJSON', 'GuardiansOfSunshine.json')
+        this.load.path = './assets/map/';
+
+        //this.load.image('tilesetImage', 'BasicTileset.png')
+        this.load.image('floor_flame_tilesetImage', 'floorAndFlameSpriteSheet.png')
+        this.load.image('steps_tilesetImage', 'caveEntranceSpriteSheet.png')
+        this.load.image('ceiling_tilesetImage', 'ceilingSpriteSheet.png')
+        
+        this.load.tilemapTiledJSON('tilemapJSON', 'GuardiansOfSunshineFinal.json')
+
+        // Load Sprites
+        this.load.path = './assets/';
+
+        // Load stickman atlas
+        this.load.atlas('stickman', 'stickman.png', 'stickman.json')
+        this.load.atlas('bomb', 'bomb.png', 'bomb.json')
 
         // Load enemies
         this.load.image('sleepySam', 'sleepySam.png');
         this.load.image('hunnyBunny', 'hunnyBunny.png');
         this.load.image('bouncyBee', 'bouncyBee.png');
-
-        // Load audio
-        this.load.audio('gameMusic', 'gameMusic.mp3');
     }
 
     create() {

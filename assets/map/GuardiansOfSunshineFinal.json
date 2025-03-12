@@ -101,7 +101,7 @@
                 {
                  "height":0,
                  "id":1,
-                 "name":"",
+                 "name":"slopeCollision",
                  "polygon":[
                         {
                          "x":0,
@@ -184,7 +184,7 @@
                 {
                  "height":0,
                  "id":5,
-                 "name":"",
+                 "name":"bouncyBeeSpawn",
                  "point":true,
                  "rotation":0,
                  "type":"",
@@ -207,7 +207,7 @@
                 {
                  "height":0,
                  "id":6,
-                 "name":"",
+                 "name":"hunnyBunnySpawn",
                  "point":true,
                  "rotation":0,
                  "type":"",
@@ -230,7 +230,7 @@
                 {
                  "height":0,
                  "id":7,
-                 "name":"",
+                 "name":"sleepySamSpawn",
                  "point":true,
                  "rotation":0,
                  "type":"",
@@ -253,7 +253,7 @@
                 {
                  "height":0,
                  "id":4,
-                 "name":"",
+                 "name":"playerSpawn",
                  "point":true,
                  "rotation":0,
                  "type":"",
