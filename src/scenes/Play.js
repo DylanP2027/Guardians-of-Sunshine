@@ -36,7 +36,7 @@ class Play extends Phaser.Scene {
         // TEMP: Spawns BouncyBee
         const bouncyBeeSpawn = map.findObject('bouncyBeeSpawn', (obj) => obj.name === 'bouncyBeeSpawn');
 
-        this.bouncyBee = this.physics.add.sprite(game.config.width/1.75, (playerSpawn.y / 1.5 + 5), 'bouncyBee')
+        this.bouncyBee = this.physics.add.sprite(bouncyBeeSpawn.x, bouncyBeeSpawn.y, 'bouncyBee')
         this.physics.add.collider(this.bouncyBee, bgLayer);
 
         this.physics.add.collider(this.bouncyBee, this.stick, this.handlePlayerHit, null, this)

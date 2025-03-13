@@ -80,7 +80,7 @@ class Menu extends Phaser.Scene {
         this.anims.create({
             key: 'stickman-jump',
             frames: this.anims.generateFrameNames('stickman',{prefix: 'jump', start: 0, end:6}),
-            frameRate: 8,
+            frameRate: 10,
             repeat: 0,
         });
         
@@ -138,7 +138,7 @@ class Menu extends Phaser.Scene {
             this.gameMusic = this.sound.add('gameMusic');
             this.gameMusic.volume = 0.15;
             this.gameMusic.loop = true;
-            this.gameMusic.play();
+            //this.gameMusic.play();
             this.registry.set('gameMusic', this.gameMusic); // Store in registry
         }
 
