@@ -56,7 +56,10 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
 
         //Punching
         if (Phaser.Input.Keyboard.JustDown(keyATTACK) && this.body.blocked.down) {
-            this.anims.play('stickman-punch').chain('stickman-battle')
+            if(this.body.velocity.x == 0){
+                this.anims.play('stickman-punch').chain('stickman-battle')
+            }
+            
         }
 
     }

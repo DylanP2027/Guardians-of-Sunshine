@@ -43,8 +43,15 @@ class Play extends Phaser.Scene {
 
         this.physics.add.collider(this.bouncyBee, this.stick, this.handlePlayerHit, null, this)
         
-        //adding the attack hitbox
+        // Adding the attack hitbox
         this.physics.add.overlap(this.stick.attackHitbox, this.bouncyBee, this.handleAttack, null, this)
+
+
+        // Cameras
+        this.cameras.main.setBounds(0,0, map.widthInPixels, map.heightInPixels)
+        this.cameras.main.startFollow(this.stick, true, 0.25, 0.25)
+        this.cameras.main.setZoom(3.5)
+        this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
     }
 
     update() {
