@@ -97,14 +97,14 @@ class Menu extends Phaser.Scene {
             key: 'stickman-battle',
             frames: this.anims.generateFrameNames('stickman',{prefix: 'battle', start: 0, end:0}),
             frameRate: 1,
-            repeat: -1,
+            repeat: 0,
         });
 
         this.anims.create({
             key: 'stickman-punch',
             frames: this.anims.generateFrameNames('stickman',{prefix: 'punch', start: 0, end:2}),
             frameRate: 3,
-            repeat: -1,
+            repeat: 0,
         });
 
         this.anims.create({
