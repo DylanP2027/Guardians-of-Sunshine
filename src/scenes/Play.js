@@ -1,4 +1,7 @@
+
+
 class Play extends Phaser.Scene {
+
     constructor() {
         super("playScene") // Basically gives names the key to this object menuScene
     }
@@ -20,8 +23,12 @@ class Play extends Phaser.Scene {
         const floor_flame_tilesetImage = map.addTilesetImage('floorAndFlameSpriteSheet', 'floor_flame_tilesetImage')
         const steps_tilesetImage = map.addTilesetImage('caveEntranceSpriteSheet', 'steps_tilesetImage')
         const ceiling_tilesetImage = map.addTilesetImage('ceilingSpriteSheet', 'ceiling_tilesetImage')
-        const bgLayer = map.createLayer('Tile Layer 1', [floor_flame_tilesetImage, steps_tilesetImage, ceiling_tilesetImage], 0, 0)
-        bgLayer.setCollisionByProperty({ collides: true });
+        const background_goop_tilesetImage = map.addTilesetImage('backgroundAndGoop', 'background_goop_tilesetImage') // This one doesn't have the spritesheet name attached to the Tiled file
+
+        const backgroundLayer = map.createLayer('Background', [background_goop_tilesetImage], 0, 0)
+        const collisionLayer = map.createLayer('CollisionLayer', [floor_flame_tilesetImage, steps_tilesetImage, ceiling_tilesetImage], 0, 0)
+        collisionLayer.setCollisionByProperty({ collides: true });
+       
     
         // Find player spawn location
         const playerSpawn = map.findObject('playerSpawn', (obj) => obj.name === 'playerSpawn')
@@ -33,13 +40,14 @@ class Play extends Phaser.Scene {
         this.stick.anims.play('stickman-idle')
     
         // Collisions
-        this.physics.add.collider(this.stick, bgLayer)
+        this.physics.add.collider(this.stick, collisionLayer);
+        this.physics.add.collider(this.stick, this.slopeColliders, this.handleSlopeCollision, null, this);
 
         // Add BouncyBee
         const bouncyBeeSpawn = map.findObject('bouncyBeeSpawn', (obj) => obj.name === 'bouncyBeeSpawn')
 
         this.bouncyBee = this.physics.add.sprite(bouncyBeeSpawn.x, bouncyBeeSpawn.y, 'bouncyBee')
-        this.physics.add.collider(this.bouncyBee, bgLayer);
+        this.physics.add.collider(this.bouncyBee, collisionLayer);
 
         this.physics.add.collider(this.bouncyBee, this.stick, this.handlePlayerHit, null, this)
         
@@ -71,4 +79,4 @@ class Play extends Phaser.Scene {
         }
     }
 }
-        
+

@@ -39,6 +39,7 @@ class Menu extends Phaser.Scene {
         this.load.image('floor_flame_tilesetImage', 'floorAndFlameSpriteSheet.png')
         this.load.image('steps_tilesetImage', 'caveEntranceSpriteSheet.png')
         this.load.image('ceiling_tilesetImage', 'ceilingSpriteSheet.png')
+        this.load.image('background_goop_tilesetImage', 'backgroundAndGoopSpriteSheet.png'); 
         
         this.load.tilemapTiledJSON('tilemapJSON', 'GuardiansOfSunshineFinal.json')
 
