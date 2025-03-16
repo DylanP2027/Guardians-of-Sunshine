@@ -4,6 +4,7 @@ class Play extends Phaser.Scene {
         super("playScene"); // Scene key
 
         let punchedBee = false;
+        let HBExists = false;
     }
 
     init() {
@@ -58,20 +59,32 @@ class Play extends Phaser.Scene {
 
         // HunnyBunny setup
         const hunnyBunnySpawn = map.findObject('hunnyBunnySpawn', obj => obj.name === 'hunnyBunnySpawn');
-        this.hunnyBunny = this.physics.add.sprite(hunnyBunnySpawn.x, hunnyBunnySpawn.y - 20, 'hunnyBunny');
-        this.physics.add.collider(this.hunnyBunny, collisionLayer);
-        this.physics.add.collider(this.hunnyBunny, this.stick, this.handlePlayerHit, null, this);
 
         // Zone to have HunnyBunny Spawn
-        this.spawnHB = this.physics.add.sprite(this.hunnyBunny.x - 150, this.hunnyBunny.y, null)
-        this.spawnHB.setBodySize(this.hunnyBunny.width * 2, this.hunnyBunny.height)
+        this.spawnHB = this.physics.add.staticSprite(hunnyBunnySpawn.x - 100, hunnyBunnySpawn.y - 20, null)
+        this.spawnHB.setBodySize(36, 120)
         this.spawnHB.body.allowGravity = false
         this.spawnHB.setVisible(false)
 
+        // Pseudo-Cutscene, locks player movement until animation is complete
         this.physics.add.overlap(this.stick, this.spawnHB, () => {
-            this.hunnyBunny.anims.play('HBSpawn')
-        }, null, this);
+            //hunny bunny spawn animation
+            if(!this.HBExists){
+                this.stick.maxSpeed = 0
+                this.HBExists = true
+                this.HBSpawn = this.add.sprite(hunnyBunnySpawn.x, hunnyBunnySpawn.y - 25, 'hunnyBunny')
 
+                this.HBSpawn.anims.play('HBSpawn').once('animationcomplete', () => {
+                    this.stick.maxSpeed = 100
+
+                    // perform the old-switcheroo
+                    this.hunnyBunny = this.physics.add.sprite(hunnyBunnySpawn.x, hunnyBunnySpawn.y - 15, 'hunnyBunny');
+                    this.physics.add.collider(this.hunnyBunny, collisionLayer);
+                    this.physics.add.collider(this.hunnyBunny, this.stick, this.handlePlayerHit, null, this);
+                
+                })  
+            }
+        }, null, this);
 
         // Camera setup
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -79,9 +92,7 @@ class Play extends Phaser.Scene {
         this.cameras.main.setZoom(3.5);
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
-        // Slope definition for manual handling
-
-        // Define multiple slopes for pseudo slope collision
+        // Slope definition for manual handling, defined with multiple slopes for pseudo slope collision
         this.slopes = [
             {
                 startX: 144,
@@ -109,6 +120,10 @@ class Play extends Phaser.Scene {
 
         // Attack hitbox
         this.physics.add.overlap(this.stick.attackHitbox, this.bouncyBee, this.handleAttack, null, this);
+
+        
+        //Testing Purposes for convenience
+        this.stick.setPosition(hunnyBunnySpawn.x - 150, hunnyBunnySpawn.y - 20)
 
     }
 

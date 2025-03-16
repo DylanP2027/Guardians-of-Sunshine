@@ -53,12 +53,7 @@ class Menu extends Phaser.Scene {
         // Load enemies
         this.load.image('sleepySam', 'sleepySam.png');
         this.load.image('hunnyBunny', 'hunnyBunny.png');
-        this.load.spritesheet('hunnyBunnyCreate', 'hunnyBunnyCreate.png', {
-            frameWidth: 36,
-            frameHeight: 60,
-            startFrame: 0,
-            endFrame: 42
-        });
+        this.load.atlas('hunnyBunnyCreate', 'hunnyBunnyCreate.png', 'hunnyBunnyCreate.json');
         this.load.image('bouncyBee', 'bouncyBee.png');
     }
 
@@ -131,9 +126,10 @@ class Menu extends Phaser.Scene {
 
         this.anims.create({
             key: 'HBSpawn',
-            frames: this.anims.generateFrameNumbers('hunnyBunnyCreate', {start: 0, end: 42, first: 0}),
+            frames: this.anims.generateFrameNames('hunnyBunnyCreate', {prefix: 'HB', start: 0, end: 42}),
             framerate: 5,
             repeat: 0,
+            hideOnComplete: true,
         })
 
         if(enteredMenuScene != true) {
