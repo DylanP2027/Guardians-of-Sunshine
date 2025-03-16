@@ -28,8 +28,10 @@ class Play extends Phaser.Scene {
 
         // Create layers
         const backgroundLayer = map.createLayer('Background', [background_goop_tilesetImage], 0, 0);
-        const collisionLayer = map.createLayer('CollisionLayer', [floor_flame_tilesetImage, steps_tilesetImage, ceiling_tilesetImage], 0, 0);
+        const collisionLayer = map.createLayer('CollisionLayer', [floor_flame_tilesetImage, steps_tilesetImage, ceiling_tilesetImage, background_goop_tilesetImage], 0, 0);
+        const deathLayer = map.createLayer('deathLayer', [floor_flame_tilesetImage], 0, 0);
         collisionLayer.setCollisionByProperty({ collides: true });
+        deathLayer.setCollisionByProperty({ death: true })
 
         // Player spawn point
         const playerSpawn = map.findObject('playerSpawn', obj => obj.name === 'playerSpawn');
@@ -41,19 +43,39 @@ class Play extends Phaser.Scene {
 
         // Player collision
         this.physics.add.collider(this.stick, collisionLayer);
+        this.physics.add.collider(this.stick, deathLayer, () => {
+            // Replace later with lose life
+            this.scene.start('gameOverScene');
+        }, null, this)
+
 
         // BouncyBee setup
         const bouncyBeeSpawn = map.findObject('bouncyBeeSpawn', obj => obj.name === 'bouncyBeeSpawn');
-        this.bouncyBee = this.physics.add.sprite(bouncyBeeSpawn.x, bouncyBeeSpawn.y, 'bouncyBee');
+        this.bouncyBee = this.physics.add.sprite(bouncyBeeSpawn.x, bouncyBeeSpawn.y - 20, 'bouncyBee');
+        this.bouncyBee.body.allowGravity = false
         this.physics.add.collider(this.bouncyBee, collisionLayer);
         this.physics.add.collider(this.bouncyBee, this.stick, this.handlePlayerHit, null, this);
 
-        // Attack hitbox
-        this.physics.add.overlap(this.stick.attackHitbox, this.bouncyBee, this.handleAttack, null, this);
+        // HunnyBunny setup
+        const hunnyBunnySpawn = map.findObject('hunnyBunnySpawn', obj => obj.name === 'hunnyBunnySpawn');
+        this.hunnyBunny = this.physics.add.sprite(hunnyBunnySpawn.x, hunnyBunnySpawn.y - 20, 'hunnyBunny');
+        this.physics.add.collider(this.hunnyBunny, collisionLayer);
+        this.physics.add.collider(this.hunnyBunny, this.stick, this.handlePlayerHit, null, this);
+
+        // Zone to have HunnyBunny Spawn
+        this.spawnHB = this.physics.add.sprite(this.hunnyBunny.x - 150, this.hunnyBunny.y, null)
+        this.spawnHB.setBodySize(this.hunnyBunny.width * 2, this.hunnyBunny.height)
+        this.spawnHB.body.allowGravity = false
+        this.spawnHB.setVisible(false)
+
+        this.physics.add.overlap(this.stick, this.spawnHB, () => {
+            this.hunnyBunny.anims.play('HBSpawn')
+        }, null, this);
+
 
         // Camera setup
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        this.cameras.main.startFollow(this.stick, true, 0.25, 0.25);
+        this.cameras.main.startFollow(this.stick, true, 0.5, 0.5);
         this.cameras.main.setZoom(3.5);
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
@@ -65,6 +87,10 @@ class Play extends Phaser.Scene {
             endY: 290,
             gradient: (288 - 240) / (208 - 144) // Pre-computed slope gradient
         };
+
+        // Attack hitbox
+        this.physics.add.overlap(this.stick.attackHitbox, this.bouncyBee, this.handleAttack, null, this);
+
     }
 
     update() {
@@ -75,20 +101,20 @@ class Play extends Phaser.Scene {
     }
 
     // Handle player hit by bee
-    handlePlayerHit(stick, bouncyBee) {
-        this.scene.start('gameOverScene'); // Restart to game over
+    handlePlayerHit(stick, enemy) {
+        this.scene.start('gameOverScene')
     }
 
     // Handle player attack
     handleAttack(hitbox, enemy) {
-        
+
         switch (enemy) {
             case this.bouncyBee:
                 if (this.stick.anims.currentAnim.key === 'stickman-punch') {
                     this.punchedBee = true;
                 }
 
-                if (this.stick.anims.currentAnim.key === 'stickman-kick' && this.punchedBee){
+                if (this.stick.anims.currentAnim.key === 'stickman-kick' && this.punchedBee) {
                     enemy.destroy()
                 }
 
@@ -97,7 +123,7 @@ class Play extends Phaser.Scene {
             default:
                 break;
         }
-        
+
     }
 
     // Manual slope logic (final, clean version)

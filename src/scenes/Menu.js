@@ -35,7 +35,7 @@ class Menu extends Phaser.Scene {
         // Load for map
         this.load.path = './assets/map/';
 
-        //this.load.image('tilesetImage', 'BasicTileset.png')
+        // Load Tilesets
         this.load.image('floor_flame_tilesetImage', 'floorAndFlameSpriteSheet.png')
         this.load.image('steps_tilesetImage', 'caveEntranceSpriteSheet.png')
         this.load.image('ceiling_tilesetImage', 'ceilingSpriteSheet.png')
@@ -53,6 +53,12 @@ class Menu extends Phaser.Scene {
         // Load enemies
         this.load.image('sleepySam', 'sleepySam.png');
         this.load.image('hunnyBunny', 'hunnyBunny.png');
+        this.load.spritesheet('hunnyBunnyCreate', 'hunnyBunnyCreate.png', {
+            frameWidth: 36,
+            frameHeight: 60,
+            startFrame: 0,
+            endFrame: 42
+        });
         this.load.image('bouncyBee', 'bouncyBee.png');
     }
 
@@ -122,6 +128,13 @@ class Menu extends Phaser.Scene {
             frameRate: 2,
             repeat: -1,
         });
+
+        this.anims.create({
+            key: 'HBSpawn',
+            frames: this.anims.generateFrameNumbers('hunnyBunnyCreate', {start: 0, end: 42, first: 0}),
+            framerate: 5,
+            repeat: 0,
+        })
 
         if(enteredMenuScene != true) {
 
