@@ -80,13 +80,32 @@ class Play extends Phaser.Scene {
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
         // Slope definition for manual handling
-        this.slope = {
-            startX: 144,
-            startY: 238,
-            endX: 210,
-            endY: 290,
-            gradient: (288 - 240) / (208 - 144) // Pre-computed slope gradient
-        };
+
+        // Define multiple slopes for pseudo slope collision
+        this.slopes = [
+            {
+                startX: 144,
+               startY: 238,
+                endX: 210,
+                endY: 290,
+                gradient: (290 - 238) / (210 - 144)
+            },
+            {
+                startX: 2082,
+                startY: 288,
+                endX: 2145,
+                endY: 340,
+                gradient: (340 - 289) / (2145 - 2080)
+            },
+            {
+                startX: 2226,
+                startY: 336,
+                endX: 2288,
+                endY: 390,
+                gradient: (390 - 337) / (2288 - 2224)
+            }
+        ];
+
 
         // Attack hitbox
         this.physics.add.overlap(this.stick.attackHitbox, this.bouncyBee, this.handleAttack, null, this);
@@ -128,35 +147,34 @@ class Play extends Phaser.Scene {
 
     // Manual slope logic (final, clean version)
     checkSlope(stick) {
-        const { startX, startY, endX, gradient } = this.slope;
-        const expectedY = gradient * (stick.x - startX) + startY;
-        const buffer = 2; // Smaller buffer for tighter adherence without hard snapping
-
-        // Check if player is within slope's X-range
-        if (stick.x >= startX && stick.x <= endX) {
-            const playerBottomY = stick.y + stick.height / 2;
-
-            // Slope correction should only occur if the player is near or below the slope level
-            if (playerBottomY >= expectedY - buffer && playerBottomY <= expectedY + buffer) {
-                // Set player on slope precisely without jitter
-                stick.y = expectedY - stick.height / 2;
-                stick.body.velocity.y = 0; // Cancel vertical movement
-
-                // Add slight horizontal push in direction of movement to keep smooth flow
-                if (keyLEFT.isDown) {
-                    stick.body.velocity.x = -80; // Control horizontal slide value as needed
-                } else if (keyRIGHT.isDown) {
-                    stick.body.velocity.x = 80;
-                } else {
-                    // Optional: slow down if no key pressed for natural feel
-                    stick.body.velocity.x *= 0.9; // Dampening factor
+        const buffer = 2; // Small buffer for adherence without hard snapping
+    
+        for (let slope of this.slopes) {
+            const { startX, startY, endX, gradient } = slope;
+            const expectedY = gradient * (stick.x - startX) + startY;
+    
+            // Check if player is within the slope's X-range
+            if (stick.x >= startX && stick.x <= endX) {
+                const playerBottomY = stick.y + stick.height / 2;
+    
+                // Apply slope correction only if the player is near or below the slope level
+                if (playerBottomY >= expectedY - buffer && playerBottomY <= expectedY + buffer) {
+                    // Align player precisely on slope
+                    stick.y = expectedY - stick.height / 2;
+                    stick.body.velocity.y = 0; // Stop downward movement
+    
+                    // Add slight horizontal push for smooth movement
+                    if (keyLEFT.isDown) {
+                        stick.body.velocity.x = -80;
+                    } else if (keyRIGHT.isDown) {
+                        stick.body.velocity.x = 80;
+                    } else {
+                        stick.body.velocity.x *= 0.9; // Slow down naturally
+                    }
+    
+                    return; // Exit loop early once a matching slope is applied
                 }
-
-            } else if (playerBottomY > expectedY) {
-                // If below slope (falling), let gravity handle it (no correction)
-            } else {
-                // If jumping above slope, ignore slope snapping to avoid yanking the player down
             }
         }
-    }
+    }    
 }
