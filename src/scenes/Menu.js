@@ -112,8 +112,8 @@ class Menu extends Phaser.Scene {
             key: 'stickman-kick',
             //kick4 extra frame
             frames: this.anims.generateFrameNames('stickman',{prefix: 'kick', start: 0, end:3}),
-            frameRate: 4,
-            repeat: -1,
+            frameRate: 3,
+            repeat: 0,
         });
 
         this.anims.create({

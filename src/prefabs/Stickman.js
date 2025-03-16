@@ -1,5 +1,5 @@
 class Stickman extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, x, y, texture, frame, keyLEFT, keyRIGHT, keyJUMP) {
+    constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
 
         // Add stickman to scene
@@ -55,9 +55,17 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
         }
 
         //Punching
-        if (Phaser.Input.Keyboard.JustDown(keyATTACK) && this.body.blocked.down) {
+        if (Phaser.Input.Keyboard.JustDown(keyPUNCH) && this.body.blocked.down) {
             if(this.body.velocity.x == 0){
                 this.anims.play('stickman-punch').chain('stickman-battle')
+            }
+            
+        }
+
+        // Kicking
+        if (Phaser.Input.Keyboard.JustDown(keyKICK) && this.body.blocked.down) {
+            if(this.body.velocity.x == 0){
+                this.anims.play('stickman-kick').chain('stickman-battle')
             }
             
         }

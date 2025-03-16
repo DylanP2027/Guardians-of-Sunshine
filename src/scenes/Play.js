@@ -2,6 +2,8 @@ class Play extends Phaser.Scene {
 
     constructor() {
         super("playScene"); // Scene key
+
+        let punchedBee = false;
     }
 
     init() {
@@ -14,7 +16,8 @@ class Play extends Phaser.Scene {
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keyJUMP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
-        keyATTACK = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+        keyPUNCH = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+        keyKICK = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
 
         // Load tilemap and tilesets
         const map = this.add.tilemap('tilemapJSON');
@@ -30,7 +33,7 @@ class Play extends Phaser.Scene {
 
         // Player spawn point
         const playerSpawn = map.findObject('playerSpawn', obj => obj.name === 'playerSpawn');
-        
+
         // Create player
         this.stick = new Stickman(this, playerSpawn.x, (playerSpawn.y / 1.5 + 5), 'stickman', 0);
         this.stick.setBodySize(this.stick.width * 0.4, this.stick.height, true);
@@ -44,7 +47,7 @@ class Play extends Phaser.Scene {
         this.bouncyBee = this.physics.add.sprite(bouncyBeeSpawn.x, bouncyBeeSpawn.y, 'bouncyBee');
         this.physics.add.collider(this.bouncyBee, collisionLayer);
         this.physics.add.collider(this.bouncyBee, this.stick, this.handlePlayerHit, null, this);
-        
+
         // Attack hitbox
         this.physics.add.overlap(this.stick.attackHitbox, this.bouncyBee, this.handleAttack, null, this);
 
@@ -78,9 +81,23 @@ class Play extends Phaser.Scene {
 
     // Handle player attack
     handleAttack(hitbox, enemy) {
-        if (this.stick.anims.currentAnim.key === 'stickman-punch' && this.stick.anims.isPlaying) {
-            enemy.destroy(); // Destroy enemy when attacked
+        
+        switch (enemy) {
+            case this.bouncyBee:
+                if (this.stick.anims.currentAnim.key === 'stickman-punch') {
+                    this.punchedBee = true;
+                }
+
+                if (this.stick.anims.currentAnim.key === 'stickman-kick' && this.punchedBee){
+                    enemy.destroy()
+                }
+
+                break;
+
+            default:
+                break;
         }
+        
     }
 
     // Manual slope logic (final, clean version)
@@ -88,18 +105,18 @@ class Play extends Phaser.Scene {
         const { startX, startY, endX, gradient } = this.slope;
         const expectedY = gradient * (stick.x - startX) + startY;
         const buffer = 2; // Smaller buffer for tighter adherence without hard snapping
-    
+
         // Check if player is within slope's X-range
         if (stick.x >= startX && stick.x <= endX) {
             const playerBottomY = stick.y + stick.height / 2;
-    
+
             // Slope correction should only occur if the player is near or below the slope level
             if (playerBottomY >= expectedY - buffer && playerBottomY <= expectedY + buffer) {
                 // Set player on slope precisely without jitter
                 stick.y = expectedY - stick.height / 2;
                 stick.body.velocity.y = 0; // Cancel vertical movement
-    
-                // 🔑 Add slight horizontal push in direction of movement to keep smooth flow
+
+                // Add slight horizontal push in direction of movement to keep smooth flow
                 if (keyLEFT.isDown) {
                     stick.body.velocity.x = -80; // Control horizontal slide value as needed
                 } else if (keyRIGHT.isDown) {
@@ -108,12 +125,12 @@ class Play extends Phaser.Scene {
                     // Optional: slow down if no key pressed for natural feel
                     stick.body.velocity.x *= 0.9; // Dampening factor
                 }
-    
+
             } else if (playerBottomY > expectedY) {
                 // If below slope (falling), let gravity handle it (no correction)
             } else {
                 // If jumping above slope, ignore slope snapping to avoid yanking the player down
             }
         }
-    }    
+    }
 }
