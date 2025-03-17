@@ -75,8 +75,10 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
         // Bomb Ability
         if (Phaser.Input.Keyboard.JustDown(keyABILITY) && this.body.blocked.down && !this.isThrowingBomb) {
             if (this.body.velocity.x == 0) {
+                this.setOffset(0, 25)
                 this.isThrowingBomb = true;
                 this.anims.play('stickman-bomb').once('animationcomplete', () => {
+                    this.setOffset(0,0)
                     this.anims.play('stickman-battle')
                     this.isThrowingBomb = false;
                 })

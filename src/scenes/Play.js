@@ -40,8 +40,9 @@ class Play extends Phaser.Scene {
 
         // Create player
         this.stick = new Stickman(this, playerSpawn.x, playerSpawn.y, 'stickman', 0);
-        this.stick.setBodySize(this.stick.width * 0.4, this.stick.height, true);
+        this.stick.setBodySize(this.stick.width * 0.5, this.stick.height, true);
         this.stick.anims.play('stickman-idle');
+
 
         // Player collision
         this.physics.add.collider(this.stick, collisionLayer);
@@ -89,7 +90,7 @@ class Play extends Phaser.Scene {
 
         // Camera setup
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        this.cameras.main.startFollow(this.stick, true, 0.5, 0.5);
+        this.cameras.main.startFollow(this.stick, true, 0.5, 0.5, 0, 45);
         this.cameras.main.setZoom(3.5);
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
@@ -124,7 +125,7 @@ class Play extends Phaser.Scene {
 
         
         //Testing Purposes for convenience
-        this.stick.setPosition(hunnyBunnySpawn.x - 150, hunnyBunnySpawn.y - 20)
+        this.stick.setPosition(hunnyBunnySpawn.x - 150, hunnyBunnySpawn.y - 50)
 
     }
 

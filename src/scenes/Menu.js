@@ -48,7 +48,7 @@ class Menu extends Phaser.Scene {
 
         // Load stickman atlas
         this.load.atlas('stickman', 'stickman.png', 'stickman.json')
-        this.load.atlas('bomb', 'bomb.png', 'bomb.json')
+        this.load.atlas('bombThrow', 'bombThrow.png', 'bombThrow.json')
 
         // Load enemies
         this.load.image('sleepySam', 'sleepySam.png');
@@ -119,7 +119,7 @@ class Menu extends Phaser.Scene {
 
         this.anims.create({
             key: 'stickman-bomb',
-            frames: this.anims.generateFrameNames('bomb',{prefix: 'bomb', start: 0, end:10}),
+            frames: this.anims.generateFrameNames('bombThrow',{prefix: 'bomb', start: 0, end:10}),
             frameRate: 4,
             repeat: 0,
         });
@@ -127,7 +127,7 @@ class Menu extends Phaser.Scene {
         this.anims.create({
             key: 'HBSpawn',
             frames: this.anims.generateFrameNames('hunnyBunnyCreate', {prefix: 'HB', start: 0, end: 42}),
-            framerate: 5,
+            frameRate: 10,
             repeat: 0,
             hideOnComplete: true,
         })
