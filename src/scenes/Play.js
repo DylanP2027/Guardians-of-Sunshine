@@ -125,6 +125,18 @@ class Play extends Phaser.Scene {
         //Testing Purposes for convenience
         this.stick.setPosition(hunnyBunnySpawn.x - 150, hunnyBunnySpawn.y - 50)
 
+        // Create UI camera
+        this.UICamera = this.cameras.add(0, 0, this.scale.width, this.scale.height);
+        this.UICamera.setScroll(0, 0); // Fixed camera
+        this.UICamera.ignore([backgroundLayer, collisionLayer, deathLayer, this.stick, this.bouncyBee, this.spawnHB]); // Ignore world/game elements
+
+        // Create UI container for UI elements
+        this.UIContainer = this.add.container(0, 0);
+        this.UIBackground = this.add.image(0, 0, 'UIBackground').setOrigin(0).setScale(4);
+        this.UIContainer.add(this.UIBackground);
+        this.UIContainer.setDepth(100); 
+
+        
     }
 
     update() {

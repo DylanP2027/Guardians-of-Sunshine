@@ -62,6 +62,11 @@ class Menu extends Phaser.Scene {
         this.load.image('hunnyBunny', 'hunnyBunny.png');
         this.load.atlas('hunnyBunnyCreate', 'hunnyBunnyCreate.png', 'hunnyBunnyCreate.json');
         this.load.image('bouncyBee', 'bouncyBee.png');
+
+
+        // Load UI
+        this.load.path = './assets/UI/';
+        this.load.image('UIBackground', 'UI.png')
     }
 
     create() {
