@@ -8,6 +8,7 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
         this.body.setCollideWorldBounds(true);
         
         this.isThrowingBomb = false;
+        this.HBDied = false;
 
         this.maxSpeed = 100;
         this.maxJumpSpeed = 300;
@@ -72,13 +73,17 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
 
         }
 
-        // Bomb Ability
-        if (Phaser.Input.Keyboard.JustDown(keyABILITY) && this.body.blocked.down && !this.isThrowingBomb) {
-            if (this.body.velocity.x == 0) {
-                this.setOffset(0, 25)
+        // Bomb Ability: can only be done when HunnyBunny is present and alive, prevents player softlocking themselves for now
+        if (Phaser.Input.Keyboard.JustDown(keyABILITY) && this.body.blocked.down && !this.isThrowingBomb && !this.HBDied && this.scene.HBSpawned) {
+            if (this.body.velocity.x == 0 && !this.flipX) {
+                this.tempStick = this.scene.add.sprite(this.x + this.width/2.2, this.y - this.height/2, 'stickman', 0)
+                this.tempStick.anims.play('stickman-bomb')
                 this.isThrowingBomb = true;
+    
                 this.anims.play('stickman-bomb').once('animationcomplete', () => {
-                    this.setOffset(0,0)
+                    this.tempStick.destroy()
+                    this.enableBody(false, this.x, this.y, true, true)
+                    this.createBomb()
                     this.anims.play('stickman-battle')
                     this.isThrowingBomb = false;
                 })
@@ -86,6 +91,14 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
 
         }
 
+    }
+
+
+    createBomb(){
+        this.bomb = this.scene.physics.add.sprite(this.x + this.width, this.y - 12, 'bomb', 0)
+        this.bomb.body.allowGravity = false
+        this.bomb.setVelocityX(55)
+        this.scene.physics.add.overlap(this.bomb, this.scene.hunnyBunny, this.scene.handleAttack, null, this.scene);
     }
 
 }

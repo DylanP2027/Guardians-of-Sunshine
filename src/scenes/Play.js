@@ -2,9 +2,6 @@ class Play extends Phaser.Scene {
 
     constructor() {
         super("playScene"); // Scene key
-
-        let punchedBee = false;
-        let HBExists = false;
     }
 
     init() {
@@ -61,6 +58,8 @@ class Play extends Phaser.Scene {
 
         // HunnyBunny setup
         const hunnyBunnySpawn = map.findObject('hunnyBunnySpawn', obj => obj.name === 'hunnyBunnySpawn');
+        this.HBExists = false
+        this.HBSpawned = false
 
         // Zone to have HunnyBunny Spawn
         this.spawnHB = this.physics.add.staticSprite(hunnyBunnySpawn.x - 100, hunnyBunnySpawn.y - 20, null)
@@ -71,20 +70,20 @@ class Play extends Phaser.Scene {
         // Pseudo-Cutscene, locks player movement until animation is complete
         this.physics.add.overlap(this.stick, this.spawnHB, () => {
             //hunny bunny spawn animation
-            if(!this.HBExists){
+            if (!this.HBExists) {
                 this.stick.maxSpeed = 0
                 this.HBExists = true
                 this.HBSpawn = this.add.sprite(hunnyBunnySpawn.x, hunnyBunnySpawn.y - 25, 'hunnyBunny')
 
                 this.HBSpawn.anims.play('HBSpawn').once('animationcomplete', () => {
                     this.stick.maxSpeed = 100
-
+                    this.HBSpawned = true
                     // perform the old-switcheroo
                     this.hunnyBunny = this.physics.add.sprite(hunnyBunnySpawn.x, hunnyBunnySpawn.y - 15, 'hunnyBunny');
                     this.physics.add.collider(this.hunnyBunny, collisionLayer);
                     this.physics.add.collider(this.hunnyBunny, this.stick, this.handlePlayerHit, null, this);
-                
-                })  
+
+                })
             }
         }, null, this);
 
@@ -98,7 +97,7 @@ class Play extends Phaser.Scene {
         this.slopes = [
             {
                 startX: 144,
-               startY: 238,
+                startY: 238,
                 endX: 210,
                 endY: 290,
                 gradient: (290 - 238) / (210 - 144)
@@ -123,7 +122,6 @@ class Play extends Phaser.Scene {
         // Attack hitbox
         this.physics.add.overlap(this.stick.attackHitbox, this.bouncyBee, this.handleAttack, null, this);
 
-        
         //Testing Purposes for convenience
         this.stick.setPosition(hunnyBunnySpawn.x - 150, hunnyBunnySpawn.y - 50)
 
@@ -134,9 +132,14 @@ class Play extends Phaser.Scene {
             this.stick.update();
             this.checkSlope(this.stick);
         }
+
+        //while throwing replace with dummy sprite
+        if (this.stick.isThrowingBomb) {
+            this.stick.disableBody(false, true)
+        }
     }
 
-    // Handle player hit by bee
+    // Handle player hit by enemy
     handlePlayerHit(stick, enemy) {
         this.scene.start('gameOverScene')
     }
@@ -146,6 +149,7 @@ class Play extends Phaser.Scene {
 
         switch (enemy) {
             case this.bouncyBee:
+
                 if (this.stick.anims.currentAnim.key === 'stickman-punch') {
                     this.punchedBee = true;
                 }
@@ -153,6 +157,13 @@ class Play extends Phaser.Scene {
                 if (this.stick.anims.currentAnim.key === 'stickman-kick' && this.punchedBee) {
                     enemy.destroy()
                 }
+
+                break;
+                
+            case this.hunnyBunny:
+                this.stick.HBDied = true;
+                enemy.destroy()
+                this.stick.bomb.destroy()
 
                 break;
 
@@ -165,21 +176,21 @@ class Play extends Phaser.Scene {
     // Manual slope logic (final, clean version)
     checkSlope(stick) {
         const buffer = 2; // Small buffer for adherence without hard snapping
-    
+
         for (let slope of this.slopes) {
             const { startX, startY, endX, gradient } = slope;
             const expectedY = gradient * (stick.x - startX) + startY;
-    
+
             // Check if player is within the slope's X-range
             if (stick.x >= startX && stick.x <= endX) {
                 const playerBottomY = stick.y + stick.height / 2;
-    
+
                 // Apply slope correction only if the player is near or below the slope level
                 if (playerBottomY >= expectedY - buffer && playerBottomY <= expectedY + buffer) {
                     // Align player precisely on slope
                     stick.y = expectedY - stick.height / 2;
                     stick.body.velocity.y = 0; // Stop downward movement
-    
+
                     // Add slight horizontal push for smooth movement
                     if (keyLEFT.isDown) {
                         stick.body.velocity.x = -80;
@@ -188,10 +199,10 @@ class Play extends Phaser.Scene {
                     } else {
                         stick.body.velocity.x *= 0.9; // Slow down naturally
                     }
-    
+
                     return; // Exit loop early once a matching slope is applied
                 }
             }
         }
-    }    
+    }
 }

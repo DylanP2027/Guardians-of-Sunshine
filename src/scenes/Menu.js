@@ -50,6 +50,13 @@ class Menu extends Phaser.Scene {
         this.load.atlas('stickman', 'stickman.png', 'stickman.json')
         this.load.atlas('bombThrow', 'bombThrow.png', 'bombThrow.json')
 
+        this.load.spritesheet('bomb', 'bomb.png', {
+            frameWidth: 12,
+            frameHeight: 21,
+            startFrame: 0,
+            endFrame: 2,
+        })
+
         // Load enemies
         this.load.image('sleepySam', 'sleepySam.png');
         this.load.image('hunnyBunny', 'hunnyBunny.png');
@@ -121,6 +128,13 @@ class Menu extends Phaser.Scene {
             key: 'stickman-bomb',
             frames: this.anims.generateFrameNames('bombThrow',{prefix: 'bomb', start: 0, end:10}),
             frameRate: 4,
+            repeat: 0,
+        });
+
+        this.anims.create({
+            key: 'bomb',
+            frames: this.anims.generateFrameNumbers('bomb',{start: 0, end:2}),
+            frameRate: 3,
             repeat: 0,
         });
 
