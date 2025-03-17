@@ -10,6 +10,10 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        // Lives counter
+        let maxLives = 3
+        let currentLives = maxLives;
+
         // Define controls
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -97,24 +101,24 @@ class Play extends Phaser.Scene {
         this.slopes = [
             {
                 startX: 144,
-                startY: 238,
+                startY: 237,
                 endX: 210,
                 endY: 290,
-                gradient: (290 - 238) / (210 - 144)
+                gradient: (290 - 237) / (210 - 144)
             },
             {
                 startX: 2082,
-                startY: 288,
+                startY: 286,
                 endX: 2145,
                 endY: 340,
-                gradient: (340 - 289) / (2145 - 2080)
+                gradient: (340 - 286) / (2145 - 2080)
             },
             {
                 startX: 2226,
-                startY: 336,
+                startY: 334,
                 endX: 2288,
                 endY: 390,
-                gradient: (390 - 337) / (2288 - 2224)
+                gradient: (390 - 334) / (2288 - 2224)
             }
         ];
 
@@ -135,6 +139,7 @@ class Play extends Phaser.Scene {
         this.UIBackground = this.add.image(0, 0, 'UIBackground').setOrigin(0).setScale(4);
         this.UIContainer.add(this.UIBackground);
         this.UIContainer.setDepth(100); 
+        this.cameras.main.ignore([this.UIContainer]); 
 
         
     }
@@ -187,7 +192,7 @@ class Play extends Phaser.Scene {
 
     // Manual slope logic (final, clean version)
     checkSlope(stick) {
-        const buffer = 2; // Small buffer for adherence without hard snapping
+        const buffer = 4; // Small buffer for adherence without hard snapping
 
         for (let slope of this.slopes) {
             const { startX, startY, endX, gradient } = slope;
