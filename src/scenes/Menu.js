@@ -120,8 +120,8 @@ class Menu extends Phaser.Scene {
         this.anims.create({
             key: 'stickman-bomb',
             frames: this.anims.generateFrameNames('bomb',{prefix: 'bomb', start: 0, end:10}),
-            frameRate: 2,
-            repeat: -1,
+            frameRate: 4,
+            repeat: 0,
         });
 
         this.anims.create({
@@ -134,7 +134,7 @@ class Menu extends Phaser.Scene {
 
         if(enteredMenuScene != true) {
 
-            enteredMenuScene = true; // Flags the event
+            enteredMenuScene = true;
 
             // Animation for the title screen
             this.anims.create({

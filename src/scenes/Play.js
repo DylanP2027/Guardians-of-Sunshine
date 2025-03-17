@@ -19,6 +19,7 @@ class Play extends Phaser.Scene {
         keyJUMP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keyPUNCH = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
         keyKICK = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
+        keyABILITY = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
 
         // Load tilemap and tilesets
         const map = this.add.tilemap('tilemapJSON');
@@ -38,7 +39,7 @@ class Play extends Phaser.Scene {
         const playerSpawn = map.findObject('playerSpawn', obj => obj.name === 'playerSpawn');
 
         // Create player
-        this.stick = new Stickman(this, playerSpawn.x, (playerSpawn.y / 1.5 + 5), 'stickman', 0);
+        this.stick = new Stickman(this, playerSpawn.x, playerSpawn.y, 'stickman', 0);
         this.stick.setBodySize(this.stick.width * 0.4, this.stick.height, true);
         this.stick.anims.play('stickman-idle');
 
