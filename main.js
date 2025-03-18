@@ -17,12 +17,12 @@ let config = {
         debug: true
       }
     },
-    scene: [ Menu, CurrentLevel, Play, GameOver, Win ]
+    scene: [ Menu, Instructions, CurrentLevel, Play, GameOver, Win ]
   }
   
   let game = new Phaser.Game(config) // Sets up the new phaser game.
   
-  let keyRESET, keyJUMP, keyUP, keyLEFT, keyRIGHT, keyABILITY, keyPUNCH, keyKICK // Reserved keyboard bindings.
+  let keySPACE, keyRESET, keyJUMP, keyUP, keyLEFT, keyRIGHT, keyABILITY, keyPUNCH, keyKICK // Reserved keyboard bindings.
   let keyDanceUP, keyDanceDOWN, keyDanceRIGHT, keyDanceLEFT
   
   // Sets the UI size

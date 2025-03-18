@@ -18,7 +18,7 @@ class Menu extends Phaser.Scene {
             endFrame: 1
         });
 
-        // Load Win Screen (Fixed the key name)
+        // Load Win Screen
         this.load.image('youWin', 'youWin.png');
 
         // Load Current Level Scene
@@ -67,6 +67,9 @@ class Menu extends Phaser.Scene {
         // Load UI
         this.load.path = './assets/UI/';
         this.load.image('UIBackground', 'UI.png')
+
+        // Load Instructions Screen
+        this.load.image('instructions', 'instructions.png');
     }
 
     create() {
@@ -186,16 +189,11 @@ class Menu extends Phaser.Scene {
 
         // Define keys for menu navigation
         this.keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        this.keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
     }
 
     update() {
         if (Phaser.Input.Keyboard.JustDown(this.keySPACE)) {
-            this.scene.start('currentLevelScene');
-            // this.menuSelectionSound.play();
-        }
-        if (Phaser.Input.Keyboard.JustDown(this.keyDOWN)) {
-            this.scene.start('gameOverScene');
+            this.scene.start('instructionsScene');
             // this.menuSelectionSound.play();
         }
     }
