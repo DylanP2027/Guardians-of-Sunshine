@@ -11,7 +11,7 @@ class Menu extends Phaser.Scene {
         this.load.path = './assets/UI/';
 
         // Load Main Menu spritesheet
-        this.load.spritesheet('mainMenuSpriteSheet', 'mainMenu.png', {
+        this.load.spritesheet('mainMenuSpriteSheet', 'mainMenuBackground.png', {
             frameWidth: 1920,
             frameHeight: 1080,
             startFrame: 0,
@@ -185,12 +185,12 @@ class Menu extends Phaser.Scene {
         this.mainMenuSprite.play('mainMenu');
 
         // Define keys for menu navigation
-        this.keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+        this.keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
     }
 
     update() {
-        if (Phaser.Input.Keyboard.JustDown(this.keyUP)) {
+        if (Phaser.Input.Keyboard.JustDown(this.keySPACE)) {
             this.scene.start('currentLevelScene');
             // this.menuSelectionSound.play();
         }

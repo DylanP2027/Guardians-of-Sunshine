@@ -11,8 +11,8 @@ class Play extends Phaser.Scene {
 
     create() {
         // Lives counter
-        let maxLives = 3
-        let currentLives = maxLives;
+        this.maxLives = 3
+        this.currentLives = this.maxLives;
 
         // Define controls
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -94,7 +94,7 @@ class Play extends Phaser.Scene {
         // Camera setup
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.startFollow(this.stick, true, 0.5, 0.5, 0, 45);
-        this.cameras.main.setZoom(3.5);
+        this.cameras.main.setZoom(3);
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
         // Slope definition for manual handling, defined with multiple slopes for pseudo slope collision
