@@ -10,6 +10,8 @@ class Menu extends Phaser.Scene {
         // Load UI
         this.load.path = './assets/UI/';
 
+        this.load.image('LifeIcon', 'UI_life.png')
+
         // Load Main Menu spritesheet
         this.load.spritesheet('mainMenuSpriteSheet', 'mainMenuBackground.png', {
             frameWidth: 1920,

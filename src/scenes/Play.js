@@ -13,6 +13,8 @@ class Play extends Phaser.Scene {
         // Lives counter
         this.maxLives = 3
         this.currentLives = this.maxLives;
+        this.life_icons = []
+
 
         // Define controls
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -37,28 +39,26 @@ class Play extends Phaser.Scene {
         deathLayer.setCollisionByProperty({ death: true })
 
         // Player spawn point
-        const playerSpawn = map.findObject('playerSpawn', obj => obj.name === 'playerSpawn');
+        this.playerSpawn = map.findObject('playerSpawn', obj => obj.name === 'playerSpawn');
 
         // Create player
-        this.stick = new Stickman(this, playerSpawn.x, playerSpawn.y, 'stickman', 0);
+        this.stick = new Stickman(this, this.playerSpawn.x, this.playerSpawn.y, 'stickman', 0);
         this.stick.setBodySize(this.stick.width * 0.5, this.stick.height, true);
         this.stick.anims.play('stickman-idle');
 
 
         // Player collision
         this.physics.add.collider(this.stick, collisionLayer);
-        this.physics.add.collider(this.stick, deathLayer, () => {
-            // Replace later with lose life
-            this.scene.start('gameOverScene');
-        }, null, this)
+        this.physics.add.collider(this.stick, deathLayer, this.handleDeath, null, this);
 
 
         // BouncyBee setup
         const bouncyBeeSpawn = map.findObject('bouncyBeeSpawn', obj => obj.name === 'bouncyBeeSpawn');
         this.bouncyBee = this.physics.add.sprite(bouncyBeeSpawn.x, bouncyBeeSpawn.y - 20, 'bouncyBee');
         this.bouncyBee.body.allowGravity = false
+        this.bouncyBee.setImmovable(true)
         this.physics.add.collider(this.bouncyBee, collisionLayer);
-        this.physics.add.collider(this.bouncyBee, this.stick, this.handlePlayerHit, null, this);
+        this.physics.add.collider(this.bouncyBee, this.stick, this.handleDeath, null, this);
 
         // HunnyBunny setup
         const hunnyBunnySpawn = map.findObject('hunnyBunnySpawn', obj => obj.name === 'hunnyBunnySpawn');
@@ -84,8 +84,9 @@ class Play extends Phaser.Scene {
                     this.HBSpawned = true
                     // perform the old-switcheroo
                     this.hunnyBunny = this.physics.add.sprite(hunnyBunnySpawn.x, hunnyBunnySpawn.y - 15, 'hunnyBunny');
+                    this.hunnyBunny.setImmovable(true)
                     this.physics.add.collider(this.hunnyBunny, collisionLayer);
-                    this.physics.add.collider(this.hunnyBunny, this.stick, this.handlePlayerHit, null, this);
+                    this.physics.add.collider(this.hunnyBunny, this.stick, this.handleDeath, null, this);
 
                 })
             }
@@ -126,9 +127,6 @@ class Play extends Phaser.Scene {
         // Attack hitbox
         this.physics.add.overlap(this.stick.attackHitbox, this.bouncyBee, this.handleAttack, null, this);
 
-        //Testing Purposes for convenience
-        this.stick.setPosition(hunnyBunnySpawn.x - 150, hunnyBunnySpawn.y - 50)
-
         // Create UI camera
         this.UICamera = this.cameras.add(0, 0, this.scale.width, this.scale.height);
         this.UICamera.setScroll(0, 0); // Fixed camera
@@ -141,7 +139,14 @@ class Play extends Phaser.Scene {
         this.UIContainer.setDepth(100); 
         this.cameras.main.ignore([this.UIContainer]); 
 
-        
+        // Create UI for lives left
+        for (let i = 0; i < this.currentLives; i++) {
+            let life = this.add.image(100 + ((220/this.currentLives) * i), 60, 'LifeIcon').setScale(4);
+            this.UIContainer.add(life);
+        }
+
+        //Testing Purposes for convenience
+        this.stick.setPosition(hunnyBunnySpawn.x - 150, hunnyBunnySpawn.y - 50)
     }
 
     update() {
@@ -156,9 +161,55 @@ class Play extends Phaser.Scene {
         }
     }
 
-    // Handle player hit by enemy
-    handlePlayerHit(stick, enemy) {
-        this.scene.start('gameOverScene')
+    handleDeath(type) {
+
+        if(this.currentLives == 0){
+            this.scene.start('gameOverScene')
+        }else{
+            switch (type) {
+                case this.bouncyBee:
+                    this.loseLife()
+                    this.stick.setPosition(this.bouncyBee.x - 150, this.bouncyBee.y);
+                    break;
+                
+                case this.hunnyBunny:
+                    this.loseLife()
+                    this.stick.setPosition(this.hunnyBunny.x - 150, this.hunnyBunny.y);
+                    break;
+                default:            
+                
+                    if (!this.isDead) {
+                        this.isDead = true;
+            
+                        // Reduce unnecessary physics calculations by disabling collision temporarily
+                        this.physics.world.colliders.getActive().forEach(collider => {
+                            if (collider.object2 === this.deathLayer) collider.active = false;
+                        });
+                        
+                        this.loseLife()
+                
+                        this.time.delayedCall(100, () => {
+                            this.stick.setPosition(this.playerSpawn.x, this.playerSpawn.y);
+                            this.isDead = false;
+                
+                            // Re-enable death collision after respawn
+                            this.physics.world.colliders.getActive().forEach(collider => {
+                                if (collider.object2 === this.deathLayer) collider.active = true;
+                            });
+                        });
+                    }
+                    break;
+            }
+        }
+
+    }
+
+    loseLife(){
+        this.currentLives -= 1;
+
+        if(this.currentLives == 0){
+            this.scene.start('gameOverScene')
+        }
     }
 
     // Handle player attack
