@@ -141,8 +141,8 @@ class Play extends Phaser.Scene {
 
         // Create UI for lives left
         for (let i = 0; i < this.currentLives; i++) {
-            let life = this.add.image(100 + ((220/this.currentLives) * i), 60, 'LifeIcon').setScale(4);
-            this.UIContainer.add(life);
+            this.life_icons[i] = this.add.image(100 + ((220/this.currentLives) * i), 60, 'LifeIcon').setScale(4);
+            this.UIContainer.add(this.life_icons[i]);
         }
 
         //Testing Purposes for convenience
@@ -206,6 +206,7 @@ class Play extends Phaser.Scene {
 
     loseLife(){
         this.currentLives -= 1;
+        this.life_icons[this.currentLives].destroy()
 
         if(this.currentLives == 0){
             this.scene.start('gameOverScene')
