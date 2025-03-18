@@ -73,13 +73,14 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
 
         }
 
-        // Bomb Ability: can only be done when HunnyBunny is present and alive, prevents player softlocking themselves for now
+        // Bomb Ability: can only be done when HunnyBunny is present and alive, prevents player softlocking themselves for now, alternate check later if player has a bomb or not
         if (Phaser.Input.Keyboard.JustDown(keyABILITY) && this.body.blocked.down && !this.isThrowingBomb && !this.HBDied && this.scene.HBSpawned) {
             if (this.body.velocity.x == 0 && !this.flipX) {
                 this.tempStick = this.scene.add.sprite(this.x + this.width/2.2, this.y - this.height/2, 'stickman', 0)
                 this.tempStick.anims.play('stickman-bomb')
+                this.scene.useBomb()
                 this.isThrowingBomb = true;
-    
+
                 this.anims.play('stickman-bomb').once('animationcomplete', () => {
                     this.tempStick.destroy()
                     this.enableBody(false, this.x, this.y, true, true)
@@ -95,8 +96,9 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
 
 
     createBomb(){
-        this.bomb = this.scene.physics.add.sprite(this.x + this.width, this.y - 12, 'bomb', 0)
+        this.bomb = this.scene.physics.add.sprite(this.x + this.width, this.y - 24, 'bomb', 0)
         this.bomb.body.allowGravity = false
+        this.bomb.anims.play('bombSparkle')
         this.bomb.setVelocityX(55)
         this.scene.physics.add.overlap(this.bomb, this.scene.hunnyBunny, this.scene.handleAttack, null, this.scene);
     }

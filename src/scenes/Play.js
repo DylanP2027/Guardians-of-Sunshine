@@ -11,9 +11,10 @@ class Play extends Phaser.Scene {
 
     create() {
         // Lives counter
-        this.maxLives = 3
-        this.currentLives = this.maxLives;
+        this.currentLives = 3;
+        this.currentBombs = 1;
         this.life_icons = []
+        this.bomb_icons = []
 
 
         // Define controls
@@ -84,6 +85,7 @@ class Play extends Phaser.Scene {
                     this.HBSpawned = true
                     // perform the old-switcheroo
                     this.hunnyBunny = this.physics.add.sprite(hunnyBunnySpawn.x, hunnyBunnySpawn.y - 15, 'hunnyBunny');
+                    this.hunnyBunny.anims.play('HBIdle')
                     this.hunnyBunny.setImmovable(true)
                     this.physics.add.collider(this.hunnyBunny, collisionLayer);
                     this.physics.add.collider(this.hunnyBunny, this.stick, this.handleDeath, null, this);
@@ -145,6 +147,13 @@ class Play extends Phaser.Scene {
             this.UIContainer.add(this.life_icons[i]);
         }
 
+        // Create UI for bomb count
+        for (let i = 0; i < this.currentBombs; i++) {
+            this.bomb_icons[i] = this.add.image(780 + ((220/this.currentBombs) * i), 60, 'BombIcon').setScale(4);
+            this.UIContainer.add(this.bomb_icons[i]);
+        }
+        
+
         //Testing Purposes for convenience
         this.stick.setPosition(hunnyBunnySpawn.x - 150, hunnyBunnySpawn.y - 50)
     }
@@ -176,6 +185,7 @@ class Play extends Phaser.Scene {
                     this.loseLife()
                     this.stick.setPosition(this.hunnyBunny.x - 150, this.hunnyBunny.y);
                     break;
+
                 default:            
                 
                     if (!this.isDead) {
@@ -211,6 +221,11 @@ class Play extends Phaser.Scene {
         if(this.currentLives == 0){
             this.scene.start('gameOverScene')
         }
+    }
+
+    useBomb(){
+        this.currentBombs -= 1;
+        this.bomb_icons[this.currentBombs].destroy()
     }
 
     // Handle player attack

@@ -10,7 +10,9 @@ class Menu extends Phaser.Scene {
         // Load UI
         this.load.path = './assets/UI/';
 
+        // Load Icon spritesheets
         this.load.image('LifeIcon', 'UI_life.png')
+        this.load.image('BombIcon', 'UIBomb.png')
 
         // Load Main Menu spritesheet
         this.load.spritesheet('mainMenuSpriteSheet', 'mainMenuBackground.png', {
@@ -62,6 +64,12 @@ class Menu extends Phaser.Scene {
         // Load enemies
         this.load.image('sleepySam', 'sleepySam.png');
         this.load.image('hunnyBunny', 'hunnyBunny.png');
+        this.load.spritesheet('hunnyBunnyIdle', 'hunnyBunnySpriteSheet.png', {
+            frameWidth: 36,
+            frameHeight: 48,
+            startFrame: 0,
+            endFrame: 2,
+        })
         this.load.atlas('hunnyBunnyCreate', 'hunnyBunnyCreate.png', 'hunnyBunnyCreate.json');
         this.load.image('bouncyBee', 'bouncyBee.png');
 
@@ -142,10 +150,10 @@ class Menu extends Phaser.Scene {
         });
 
         this.anims.create({
-            key: 'bomb',
+            key: 'bombSparkle',
             frames: this.anims.generateFrameNumbers('bomb',{start: 0, end:2}),
             frameRate: 3,
-            repeat: 0,
+            repeat: -1,
         });
 
         this.anims.create({
@@ -155,6 +163,13 @@ class Menu extends Phaser.Scene {
             repeat: 0,
             hideOnComplete: true,
         })
+
+        this.anims.create({
+            key: 'HBIdle',
+            frames: this.anims.generateFrameNumbers('hunnyBunnyIdle',{start: 0, end:2}),
+            frameRate: 2,
+            repeat: -1,
+        });
 
         if(enteredMenuScene != true) {
 
