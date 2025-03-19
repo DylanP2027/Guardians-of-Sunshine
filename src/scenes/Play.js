@@ -86,6 +86,11 @@ class Play extends Phaser.Scene {
         // Pseudo-Cutscene, locks player movement until animation is complete
         this.physics.add.overlap(this.stick, this.spawnHB, () => {
             //hunny bunny spawn animation
+            if(!this.HBSpawned){
+                this.stick.anims.stop()
+                this.stick.anims.setCurrentFrame(this.anims.get('stickman-walk').frames[0])
+            }
+            
             if (!this.HBExists) {
                 this.stick.maxSpeed = 0
                 this.HBExists = true
@@ -104,6 +109,18 @@ class Play extends Phaser.Scene {
                 })
             }
         }, null, this);
+
+
+        // SleepySam setup
+        const sleepySamSpawn = map.findObject('sleepySamSpawn', obj => obj.name === 'sleepySamSpawn');
+        this.sleepySam = this.physics.add.sprite(sleepySamSpawn.x, sleepySamSpawn.y - 3, 'sleepySam');
+        this.sleepySam.body.allowGravity = false
+        this.sleepySam.setImmovable(true)
+        this.physics.add.collider(this.sleepySam, collisionLayer);
+
+        this.samBattle = this.physics.add.staticSprite(sleepySamSpawn.x - 50, sleepySamSpawn.y - 20, null)
+        this.samBattle.setBodySize(60, 120)
+        this.samBattle.setVisible(false)
 
         // Camera setup
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -168,7 +185,7 @@ class Play extends Phaser.Scene {
         this.scoreText = this.add.bitmapText(this.UIBackground.displayWidth / 2, 75, 'numbersFont', this.currentScore, 98).setOrigin(0.5,0.5).setDepth(150);
 
         //Testing Purposes for convenience
-        this.stick.setPosition(hunnyBunnySpawn.x - 150, hunnyBunnySpawn.y - 50)
+        this.stick.setPosition(hunnyBunnsleepySamSpawnySpawn.x - 100, sleepySamSpawn.y - 50)
     }
 
     update() {
