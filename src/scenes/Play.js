@@ -10,6 +10,11 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        // Coins
+        this.coins = 9
+        this.coinSpawns = []
+        this.coinAnimations = []
+
         // Lives counter
         this.currentLives = 3;
         this.currentBombs = 1;
@@ -21,6 +26,7 @@ class Play extends Phaser.Scene {
         this.startingScore = 0
         this.currentScore = 0
 
+        // Game State flags
         this.readyBattle = false
         this.samBattleOutcome = false
         this.loseSoundPlayed = false
@@ -76,6 +82,24 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.stick, deathLayer, this.handleDeath, null, this);
 
         // Player & Coin Collision
+        for (let i = 1; i <= this.coins; i++) {
+            let coinSpawnName = 'coinSpawn' + i
+            let coinSpawn = map.findObject('coinSpawn', obj => obj.name === coinSpawnName);
+
+            if (coinSpawn) {
+                this.coinSpawns[i] = this.physics.add.staticSprite(coinSpawn.x, coinSpawn.y, 'coin');
+
+                this.physics.add.overlap(this.coinSpawns[i], this.stick, ()=> {
+                    this.coinSound = this.sound.add('coinSound').setVolume(0.5).setLoop(false).play()
+                    this.coinSpawns[i].destroy()
+                    this.coinAnimations[i] = this.add.sprite(coinSpawn.x, coinSpawn.y, 'coin')
+                    this.coinAnimations[i].anims.play('coinSparkle').once('animationcomplete', ()=>{
+                        this.coinAnimations[i].destroy()
+                    })
+                    this.currentScore += 50
+                }, null, this);
+            }
+        }       
 
 
         // BouncyBee setup
@@ -174,9 +198,6 @@ class Play extends Phaser.Scene {
 
         });
 
-        
-
-
         // Slope definition for manual handling, defined with multiple slopes for pseudo slope collision
         this.slopes = [
             {
@@ -251,63 +272,6 @@ class Play extends Phaser.Scene {
         //check the condition of the battle with sleepy sam
         this.checkSamBattle(this.readyBattle, this.samBattleOutcome)
 
-    }
-
-    handleDeath(type) {
-
-        if(this.currentLives <= 0){
-            this.scene.start('gameOverScene')
-        }else{
-            switch (type) {
-                case this.bouncyBee:
-                    this.loseLife()
-                    this.stick.setPosition(this.bouncyBee.x - 150, this.bouncyBee.y);
-                    break;
-                
-                case this.hunnyBunny:
-                    this.loseLife()
-                    this.stick.setPosition(this.hunnyBunny.x - 150, this.hunnyBunny.y);
-                    break;
-
-                default:            
-                
-                    if (!this.isDead) {
-                        this.isDead = true;
-            
-                        // Reduce unnecessary physics calculations by disabling collision temporarily
-                        this.physics.world.colliders.getActive().forEach(collider => {
-                            if (collider.object2 === this.deathLayer) collider.active = false;
-                        });
-                        
-                        this.loseLife()
-                
-                        this.time.delayedCall(50, () => {
-                            this.stick.setPosition(this.stick.x - 175, this.stick.y - 40);
-                            this.isDead = false;
-                
-                            // Re-enable death collision after respawn
-                            this.physics.world.colliders.getActive().forEach(collider => {
-                                if (collider.object2 === this.deathLayer) collider.active = true;
-                            });
-                        });
-                    }
-                    break;
-            }
-        }
-    }
-
-    loseLife(){
-        this.currentLives -= 1;
-        this.life_icons[this.currentLives].destroy()
-        this.readyBattle = false;
-
-        if(this.currentLives <= 0){
-            this.scene.start('gameOverScene')
-        }
-
-        this.useLife = this.sound.add('useLife');
-        this.useLife.volume = 0.4;
-        this.useLife.play();
     }
 
     useBomb(){
@@ -394,6 +358,63 @@ class Play extends Phaser.Scene {
             }
             this.scene.start('winScene')
         }
+    }
+
+    handleDeath(type) {
+
+        if(this.currentLives <= 0){
+            this.scene.start('gameOverScene')
+        }else{
+            switch (type) {
+                case this.bouncyBee:
+                    this.loseLife()
+                    this.stick.setPosition(this.bouncyBee.x - 150, this.bouncyBee.y);
+                    break;
+                
+                case this.hunnyBunny:
+                    this.loseLife()
+                    this.stick.setPosition(this.hunnyBunny.x - 150, this.hunnyBunny.y);
+                    break;
+
+                default:            
+                
+                    if (!this.isDead) {
+                        this.isDead = true;
+            
+                        // Reduce unnecessary physics calculations by disabling collision temporarily
+                        this.physics.world.colliders.getActive().forEach(collider => {
+                            if (collider.object2 === this.deathLayer) collider.active = false;
+                        });
+                        
+                        this.loseLife()
+                
+                        this.time.delayedCall(50, () => {
+                            this.stick.setPosition(this.stick.x - 175, this.stick.y - 40);
+                            this.isDead = false;
+                
+                            // Re-enable death collision after respawn
+                            this.physics.world.colliders.getActive().forEach(collider => {
+                                if (collider.object2 === this.deathLayer) collider.active = true;
+                            });
+                        });
+                    }
+                    break;
+            }
+        }
+    }
+
+    loseLife(){
+        this.currentLives -= 1;
+        this.life_icons[this.currentLives].destroy()
+        this.readyBattle = false;
+
+        if(this.currentLives <= 0){
+            this.scene.start('gameOverScene')
+        }
+
+        this.useLife = this.sound.add('useLife');
+        this.useLife.volume = 0.4;
+        this.useLife.play();
     }
 
     // Manual slope logic (final, clean version)
