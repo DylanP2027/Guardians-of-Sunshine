@@ -16,7 +16,7 @@ class Menu extends Phaser.Scene {
         this.load.image('BombIcon', 'UIBomb.png')
         this.load.image('UIBackground', 'UI.png')
 
-        // Load Main Menu spritesheet
+        // Main Menu spritesheet
         this.load.spritesheet('mainMenuSpriteSheet', 'mainMenuBackground.png', {
             frameWidth: 1920,
             frameHeight: 1080,
@@ -24,44 +24,53 @@ class Menu extends Phaser.Scene {
             endFrame: 1
         });
 
-        // Load Win Screen
+        // Win Screen
         this.load.image('youWin', 'youWin.png');
         this.load.image('pressSpaceForCredits', 'pressSpaceForCredits.png')
 
-        // Load Current Level Scene
+        // Current Level Scene
         this.load.image('currentLevel', 'level1.png');
 
-        // Load GameOver Screen
+        // GameOver Screen
         this.load.image('youLose', 'youLose.png');
         this.load.image('pressR', 'pressR.png')
 
-        // Load Credits Screen
+        // Credits Screen
         this.load.image('credits', 'credits.png')
 
-        // Load Instructions Screen
+        // Instructions Screen
         this.load.image('instructions', 'instructions.png');
 
 
         // Load Audio
         this.load.path = './assets/sfx/';
 
-        // Load Music
+        // BGM
         this.load.audio('gameMusic', 'music/gameMusic.mp3');
         this.load.audio('victoryMusic', 'music/victoryMusic.mp3');
-
-        // Load SFX
-        this.load.audio('gameOverSound', 'gameOverSound.mp3')
+        
+        // SFX
+        this.load.audio('coinSound', 'coin.mp3');
         this.load.audio('jump', 'jump.mp3');
-        this.load.audio('sleepySamEat', 'sleepySamEat.mp3');
         this.load.audio('useLife', 'useLife.mp3');
-        this.load.audio('coin', 'coin.mp3');
         this.load.audio('enemySlain', 'enemySlain.mp3')
+        this.load.audio('sleepySamEat', 'sleepySamEat.mp3');
+        this.load.audio('gameOverSound', 'gameOverSound.mp3')
+        
 
-
-        // Load for map
+        // Load Map
         this.load.path = './assets/map/';
 
-        // Load Tilesets
+        // Coins
+        this.load.image('coin', 'coin.png')
+        this.load.spritesheet('coinSparkle', 'coinSpriteSheet.png', {
+            frameWidth: 9,
+            frameHeight: 15,
+            startFrame: 0,
+            endFrame: 2,
+        })
+
+        // Tilesets
         this.load.image('floor_flame_tilesetImage', 'floorAndFlameSpriteSheet.png')
         this.load.image('steps_tilesetImage', 'caveEntranceSpriteSheet.png')
         this.load.image('ceiling_tilesetImage', 'ceilingSpriteSheet.png')
@@ -81,15 +90,22 @@ class Menu extends Phaser.Scene {
         // Load Sprites
         this.load.path = './assets/';
 
-        // Load stickman atlas
+        // Stickman + Bomb
         this.load.atlas('stickman', 'stickman.png', 'stickman.json')
         this.load.atlas('bombThrow', 'bombThrow.png', 'bombThrow.json')
 
-        // Load Score Images on Boss Kill
+        // Score
         this.load.image('score500', 'score500.png')
         this.load.image('score800', 'score800.png')
 
-        // Load enemies
+        this.load.spritesheet('bomb', 'bomb.png', {
+            frameWidth: 12,
+            frameHeight: 21,
+            startFrame: 0,
+            endFrame: 2,
+        })
+
+        // Enemies
         this.load.image('sleepySam', 'sleepySam.png');
         this.load.spritesheet('sleepySamLose', 'sleepySamLose.png', {
             frameWidth: 60,
@@ -115,8 +131,7 @@ class Menu extends Phaser.Scene {
             endFrame: 2,
         })
 
-
-        // Load bitmap font
+        // Bitmap Font
         this.load.path = './assets/';
         this.load.bitmapFont('numbersFont', 'numbersFont.png', 'numbersFont.xml')
     }
@@ -124,7 +139,7 @@ class Menu extends Phaser.Scene {
 
 
     create() {
-        // Stickman animations
+        // Stickman Animations
         this.anims.create({
             key: 'stickman-idle',
             frames: this.anims.generateFrameNames('stickman',{prefix: 'idle', start: 0, end:3}),
@@ -178,7 +193,6 @@ class Menu extends Phaser.Scene {
 
         this.anims.create({
             key: 'stickman-kick',
-            //kick4 extra frame
             frames: this.anims.generateFrameNames('stickman',{prefix: 'kick', start: 0, end:3}),
             frameRate: 3,
             repeat: 0,
@@ -198,8 +212,8 @@ class Menu extends Phaser.Scene {
             repeat: -1,
         });
 
-
-        // Hunny Bunny animations
+        
+        // Enemy Animations
         this.anims.create({
             key: 'HBSpawn',
             frames: this.anims.generateFrameNames('hunnyBunnyCreate', {prefix: 'HB', start: 0, end: 42}),
@@ -226,12 +240,26 @@ class Menu extends Phaser.Scene {
 
         // Sun animation
         this.anims.create({
+            key: 'samLose',
+            frames: this.anims.generateFrameNumbers('sleepySamLose',{start: 0, end:31}),
+            frameRate: 10,
+            repeat: 0,
+        })
+
+        // Other Animations
+        this.anims.create({
             key: 'sun',
             frames: this.anims.generateFrameNumbers('sunSpriteSheet',{start: 0, end:1}),
             frameRate: 1,
             repeat: -1,
         })
 
+        this.anims.create({
+            key: 'coinSparkle',
+            frames: this.anims.generateFrameNumbers('coinSparkle',{start: 0, end:2}),
+            frameRate: 5,
+            repeat: 0,
+        })
 
         if(enteredMenuScene != true) {
 
