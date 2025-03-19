@@ -44,6 +44,12 @@ class Menu extends Phaser.Scene {
         this.load.audio('gameOverSound', 'gameOverSound.mp3')
         this.load.audio('gameMusic', 'gameMusic.mp3');
         this.load.audio('victoryMusic', 'victoryMusic.mp3');
+        this.load.audio('jump', 'jump.mp3');
+        this.load.audio('sleepySamEat', 'sleepySamEat.mp3');
+        this.load.audio('useLife', 'useLife.mp3');
+        this.load.audio('coin', 'coin.mp3');
+        this.load.audio('enemySlain', 'enemySlain.mp3')
+
 
         // Load for map
         this.load.path = './assets/map/';
@@ -239,7 +245,9 @@ class Menu extends Phaser.Scene {
     update() {
         if (Phaser.Input.Keyboard.JustDown(this.keySPACE)) {
             this.scene.start('instructionsScene');
-            // this.menuSelectionSound.play();
+            this.jumpSound = this.sound.add('jump');
+            this.jumpSound.volume = 0.4;
+            this.jumpSound.play()
         }
     }
 }

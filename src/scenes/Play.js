@@ -294,6 +294,10 @@ class Play extends Phaser.Scene {
         if(this.currentLives <= 0){
             this.scene.start('gameOverScene')
         }
+
+        this.useLife = this.sound.add('useLife');
+        this.useLife.volume = 0.4;
+        this.useLife.play();
     }
 
     useBomb(){
@@ -316,6 +320,10 @@ class Play extends Phaser.Scene {
                     enemy.destroy()
                     this.currentScore += 500
 
+                    this.enemySlainSound = this.sound.add('enemySlain');
+                    this.enemySlainSound.volume = 0.4;
+                    this.enemySlainSound.play()
+
                     this.time.delayedCall(3000, () => {
                         if (this.score500) {
                             this.score500.destroy();
@@ -331,6 +339,10 @@ class Play extends Phaser.Scene {
                 enemy.destroy()
                 this.currentScore += 800
                 this.stick.bomb.destroy()
+
+                this.enemySlainSound = this.sound.add('enemySlain');
+                this.enemySlainSound.volume = 0.4;
+                this.enemySlainSound.play()
 
                 this.time.delayedCall(3000, () => {
                     if (this.score800) {

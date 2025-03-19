@@ -15,6 +15,9 @@ class Instructions extends Phaser.Scene {
     update() {
         if (Phaser.Input.Keyboard.JustDown(this.keySPACE)) {
             this.scene.start('currentLevelScene') // Returns to the menu
+            this.jumpSound = this.sound.add('jump');
+            this.jumpSound.volume = 0.4;
+            this.jumpSound.play()
         }
     }
 }

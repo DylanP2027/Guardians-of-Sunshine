@@ -17,6 +17,7 @@ class Credits extends Phaser.Scene {
 
     update() {
         if (Phaser.Input.Keyboard.JustDown(this.keyRESET)) {
+
             this.scene.start('menuScene') // Returns to the menu
             let victoryMusic = this.registry.get('victoryMusic') // Finds in registry
             if (victoryMusic) {
