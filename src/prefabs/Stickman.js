@@ -7,9 +7,11 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
         this.body.setCollideWorldBounds(true);
         
+        // Event triggers
         this.isThrowingBomb = false;
         this.HBDied = false;
 
+        // Speed values
         this.maxSpeed = 100;
         this.maxJumpSpeed = 300;
 
@@ -19,11 +21,12 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
         this.attackHitbox.body.allowGravity = false
         this.attackHitbox.setVisible(false)
 
-        this.anims.play('stickman-idle');
+        this.anims.play('stickman-idle'); // Plays idle animations once the player spawns
     }
 
+
+
     update() {
-        
         // Left and right movement
         if (keyLEFT.isDown && !this.isThrowingBomb && !this.scene.readyBattle) {
             this.attackHitbox.setPosition(this.x - 15, this.y);
@@ -48,19 +51,20 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
             }
 
         } else {
-            // Stop moving when no keys are pressed
-            this.setVelocityX(0)
+            this.setVelocityX(0) // Stop moving when no keys are pressed
         }
 
         // Jumping
         if (Phaser.Input.Keyboard.JustDown(keyJUMP) && this.body.blocked.down && !this.isThrowingBomb && !this.scene.readyBattle) {
             this.setVelocityY(-this.maxJumpSpeed) // Apply upward force
-            this.anims.play('stickman-jump')
+            this.anims.play('stickman-jump') // Jump animation
 
+            // Jump SFX
             this.jumpSound = this.scene.sound.add('jump');
             this.jumpSound.volume = 0.3;
             this.jumpSound.play();
         }
+
 
         //Punching
         if (Phaser.Input.Keyboard.JustDown(keyPUNCH) && this.body.blocked.down && !this.isThrowingBomb && !this.scene.readyBattle) {
@@ -70,13 +74,15 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
 
         }
 
+
         // Kicking
         if (Phaser.Input.Keyboard.JustDown(keyKICK) && this.body.blocked.down && !this.isThrowingBomb && !this.scene.readyBattle) {
             if (this.body.velocity.x == 0) {
-                this.anims.play('stickman-kick').chain('stickman-battle')
+                this.anims.play('stickman-kick').chain('stickman-battle') // Kicking animation
             }
 
         }
+
 
         // Bomb Ability: can only be done when HunnyBunny is present and alive, prevents player softlocking themselves for now, alternate check later if player has a bomb or not
         if (Phaser.Input.Keyboard.JustDown(keyABILITY) && this.body.blocked.down && !this.isThrowingBomb && !this.HBDied && this.scene.HBSpawned) {
@@ -86,6 +92,7 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
                 this.scene.useBomb()
                 this.isThrowingBomb = true;
 
+                // Bomb throwing animation
                 this.anims.play('stickman-bomb').once('animationcomplete', () => {
                     this.tempStick.destroy()
                     this.enableBody(false, this.x, this.y, true, true)
@@ -100,6 +107,8 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
     }
 
 
+
+    // Helper function to create the bomb sprite and have it move
     createBomb(){
         this.bomb = this.scene.physics.add.sprite(this.x + this.width, this.y - 24, 'bomb', 0)
         this.bomb.body.allowGravity = false
