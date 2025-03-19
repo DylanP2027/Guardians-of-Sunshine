@@ -16,6 +16,9 @@ class Play extends Phaser.Scene {
         this.life_icons = []
         this.bomb_icons = []
 
+        // Score values
+        this.startingScore = 0
+        this.currentScore = 0
 
         // Define controls
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -152,7 +155,9 @@ class Play extends Phaser.Scene {
             this.bomb_icons[i] = this.add.image(780 + ((220/this.currentBombs) * i), 60, 'BombIcon').setScale(4);
             this.UIContainer.add(this.bomb_icons[i]);
         }
-        
+
+        // Set text
+        this.scoreText = this.add.bitmapText(this.UIBackground.displayWidth / 2, 75, 'numbersFont', this.currentScore, 98).setOrigin(0.5,0.5).setDepth(150);
 
         //Testing Purposes for convenience
         this.stick.setPosition(hunnyBunnySpawn.x - 150, hunnyBunnySpawn.y - 50)
@@ -168,6 +173,9 @@ class Play extends Phaser.Scene {
         if (this.stick.isThrowingBomb) {
             this.stick.disableBody(false, true)
         }
+
+        // For updating score text
+        this.scoreText.setText(this.currentScore.toString())
     }
 
     handleDeath(type) {

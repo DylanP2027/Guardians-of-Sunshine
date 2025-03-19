@@ -80,6 +80,10 @@ class Menu extends Phaser.Scene {
 
         // Load Instructions Screen
         this.load.image('instructions', 'instructions.png');
+
+        // Load bitmap font
+        this.load.path = './assets/';
+        this.load.bitmapFont('numbersFont', 'numbersFont.png', 'numbersFont.xml')
     }
 
     create() {
