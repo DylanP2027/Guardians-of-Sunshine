@@ -21,6 +21,9 @@ class Play extends Phaser.Scene {
         this.startingScore = 0
         this.currentScore = 0
 
+        this.readyBattle = false
+        this.samBattleOutcome = false
+
         // Define controls
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -155,17 +158,18 @@ class Play extends Phaser.Scene {
             keyDanceUP, keyDanceDOWN, keyDanceUP], 
             { 
                 resetOnMatch: true,
-                maxKeyDelay: 1500
+                maxKeyDelay: 1000
             });
 
         this.input.keyboard.on('keycombomatch', ()=> {
 
             if(this.readyBattle){
-                console.log('Dance Combo!');
+                this.samBattleOutcome = true
             }
 
         });
 
+        
 
 
         // Slope definition for manual handling, defined with multiple slopes for pseudo slope collision
@@ -225,7 +229,7 @@ class Play extends Phaser.Scene {
         this.scoreText = this.add.bitmapText(this.UIBackground.displayWidth / 2, 75, 'numbersFont', this.currentScore, 98).setOrigin(0.5,0.5).setDepth(150);
 
         //Testing Purposes for convenience
-        this.stick.setPosition(sleepySamSpawn.x - 100, sleepySamSpawn.y - 50)
+        // this.stick.setPosition(sleepySamSpawn.x - 100, sleepySamSpawn.y - 50)
     }
 
     update() {
@@ -241,6 +245,9 @@ class Play extends Phaser.Scene {
 
         // For updating score text
         this.scoreText.setText(this.currentScore.toString())
+
+        //check the condition of the battle with sleepy sam
+        this.checkSamBattle(this.readyBattle, this.samBattleOutcome)
     }
 
     handleDeath(type) {
@@ -303,6 +310,18 @@ class Play extends Phaser.Scene {
     useBomb(){
         this.currentBombs -= 1;
         this.bomb_icons[this.currentBombs].destroy()
+    }
+
+    checkSamBattle(startBattle, win){
+        if(startBattle && !win){
+            this.loseTimer = this.time.delayedCall(20000, () => {
+                //replace with death animation
+                this.scene.start('gameOverScene')
+            }); 
+        }else if(startBattle && win){
+            this.loseTimer.destroy()
+            this.scene.start('winScene')
+        }
     }
 
     // Handle player attack

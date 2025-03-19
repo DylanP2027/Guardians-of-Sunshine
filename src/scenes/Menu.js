@@ -7,6 +7,7 @@ class Menu extends Phaser.Scene {
     }
 
     preload() {
+        enteredMenuScene = false;
         // Load UI
         this.load.path = './assets/UI/';
 
@@ -89,6 +90,12 @@ class Menu extends Phaser.Scene {
 
         // Load enemies
         this.load.image('sleepySam', 'sleepySam.png');
+        this.load.spritesheet('sleepySamLose', 'sleepySamLose.png', {
+            frameWidth: 60,
+            frameHeight: 30,
+            startFrame: 0,
+            endFrame: 31,
+        })
         this.load.image('hunnyBunny', 'hunnyBunny.png');
         this.load.spritesheet('hunnyBunnyIdle', 'hunnyBunnySpriteSheet.png', {
             frameWidth: 36,
@@ -203,6 +210,13 @@ class Menu extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers('sunSpriteSheet',{start: 0, end:1}),
             frameRate: 1,
             repeat: -1,
+        })
+
+        this.anims.create({
+            key: 'samLose',
+            frames: this.anims.generateFrameNumbers('sleepySamLose',{start: 0, end:31}),
+            frameRate: 3,
+            repeat: 0,
         })
 
         if(enteredMenuScene != true) {
