@@ -15,6 +15,7 @@ class Play extends Phaser.Scene {
         this.currentBombs = 1;
         this.life_icons = []
         this.bomb_icons = []
+        this.isDead = false
 
         // Score values
         this.startingScore = 0
@@ -187,7 +188,7 @@ class Play extends Phaser.Scene {
 
     handleDeath(type) {
 
-        if(this.currentLives == 0){
+        if(this.currentLives <= 0){
             this.scene.start('gameOverScene')
         }else{
             switch (type) {
@@ -213,8 +214,8 @@ class Play extends Phaser.Scene {
                         
                         this.loseLife()
                 
-                        this.time.delayedCall(100, () => {
-                            this.stick.setPosition(this.playerSpawn.x, this.playerSpawn.y);
+                        this.time.delayedCall(50, () => {
+                            this.stick.setPosition(this.stick.x - 175, this.stick.y - 40);
                             this.isDead = false;
                 
                             // Re-enable death collision after respawn
@@ -226,14 +227,13 @@ class Play extends Phaser.Scene {
                     break;
             }
         }
-
     }
 
     loseLife(){
         this.currentLives -= 1;
         this.life_icons[this.currentLives].destroy()
 
-        if(this.currentLives == 0){
+        if(this.currentLives <= 0){
             this.scene.start('gameOverScene')
         }
     }
