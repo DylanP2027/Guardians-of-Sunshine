@@ -23,6 +23,7 @@ class Play extends Phaser.Scene {
 
         this.readyBattle = false
         this.samBattleOutcome = false
+        this.loseSoundPlayed = false
 
         // Define controls
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -138,6 +139,8 @@ class Play extends Phaser.Scene {
         this.samLoseAnim = this.add.sprite(sleepySamSpawn.x - 11, sleepySamSpawn.y - 9, 'sleepySam').setOrigin(0.5, 0.5)
         this.samLoseAnim.setVisible(false)
 
+        this.samLoseSound = this.sound.add('sleepySamEat').setVolume(0.5).setLoop(false)
+
         this.physics.add.overlap(this.stick, this.samBattle, () => {
             this.cameras.main.setZoom(5)
             this.stick.anims.stop()
@@ -247,6 +250,7 @@ class Play extends Phaser.Scene {
 
         //check the condition of the battle with sleepy sam
         this.checkSamBattle(this.readyBattle, this.samBattleOutcome)
+
     }
 
     handleDeath(type) {
@@ -311,28 +315,6 @@ class Play extends Phaser.Scene {
         this.bomb_icons[this.currentBombs].destroy()
     }
 
-    checkSamBattle(startBattle, win){
-        if(startBattle && !win){
-            this.loseTimer = this.time.delayedCall(500, () => {
-                this.sleepySam.setVisible(false)
-                this.stick.setVisible(false)
-                this.samLoseAnim.setVisible(true)
-                //sound is getting base boosted here
-                if(!this.samLoseAnim.anims.isPlaying){
-                    this.samLoseAnim.anims.play('samLose').once('animationcomplete', () => {
-                        this.scene.start('gameOverScene')
-                    }, this)
-                }
-            }); 
-        }else if(startBattle && win){
-            if (this.loseTimer) {
-                this.loseTimer.remove();
-                this.loseTimer = null;
-            }
-            this.scene.start('winScene')
-        }
-    }
-
     // Handle player attack
     handleAttack(hitbox, enemy) {
 
@@ -345,6 +327,7 @@ class Play extends Phaser.Scene {
 
                 if (this.stick.anims.currentAnim.key === 'stickman-kick' && this.punchedBee) {
                     this.score500 = this.add.image(this.bouncyBee.x, this.bouncyBee.y, 'score500')
+                    this.UICamera.ignore(this.score500)
                     enemy.destroy()
                     this.currentScore += 500
 
@@ -364,6 +347,7 @@ class Play extends Phaser.Scene {
             case this.hunnyBunny:
                 this.stick.HBDied = true;
                 this.score800 = this.add.image(this.hunnyBunny.x, this.hunnyBunny.y, 'score800')
+                this.UICamera.ignore(this.score800)
                 enemy.destroy()
                 this.currentScore += 800
                 this.stick.bomb.destroy()
@@ -384,6 +368,32 @@ class Play extends Phaser.Scene {
                 break;
         }
 
+    }
+    
+    checkSamBattle(startBattle, win){
+        if(startBattle && !win){
+            this.loseTimer = this.time.delayedCall(500, () => {
+                this.sleepySam.setVisible(false)
+                this.stick.setVisible(false)
+                this.samLoseAnim.setVisible(true)
+                if(!this.samLoseSound.isPlaying && !this.loseSoundPlayed){
+                    this.loseSoundPlayed = true
+                    this.samLoseSound.play()
+                }
+                if(!this.samLoseAnim.anims.isPlaying){
+                    this.samLoseAnim.anims.play('samLose').once('animationcomplete', () => {
+                        this.scene.start('gameOverScene')
+                    }, this)
+                }
+                
+            }); 
+        }else if(startBattle && win){
+            if (this.loseTimer) {
+                this.loseTimer.remove();
+                this.loseTimer = null;
+            }
+            this.scene.start('winScene')
+        }
     }
 
     // Manual slope logic (final, clean version)

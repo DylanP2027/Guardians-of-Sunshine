@@ -43,8 +43,8 @@ class Menu extends Phaser.Scene {
         // Load Audio
         this.load.path = './assets/sfx/';
         this.load.audio('gameOverSound', 'gameOverSound.mp3')
-        this.load.audio('gameMusic', 'gameMusic.mp3');
-        this.load.audio('victoryMusic', 'victoryMusic.mp3');
+        this.load.audio('gameMusic', 'music/gameMusic.mp3');
+        this.load.audio('victoryMusic', 'music/victoryMusic.mp3');
         this.load.audio('jump', 'jump.mp3');
         this.load.audio('sleepySamEat', 'sleepySamEat.mp3');
         this.load.audio('useLife', 'useLife.mp3');
@@ -215,7 +215,7 @@ class Menu extends Phaser.Scene {
         this.anims.create({
             key: 'samLose',
             frames: this.anims.generateFrameNumbers('sleepySamLose',{start: 0, end:31}),
-            frameRate: 5,
+            frameRate: 10,
             repeat: 0,
         })
 
@@ -233,7 +233,7 @@ class Menu extends Phaser.Scene {
 
             // Background Music
             this.gameMusic = this.sound.add('gameMusic');
-            this.gameMusic.volume = 0.15;
+            this.gameMusic.volume = 0.10;
             this.gameMusic.loop = true;
             this.gameMusic.play();
             this.registry.set('gameMusic', this.gameMusic); // Store in registry
