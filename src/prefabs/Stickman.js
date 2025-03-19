@@ -10,6 +10,8 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
         // Event triggers
         this.isThrowingBomb = false;
         this.HBDied = false;
+        this.isIdle = false
+        this.idleTimer = null
 
         // Speed values
         this.maxSpeed = 100;
@@ -27,11 +29,14 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
 
 
     update() {
+        let isMoving = false; // Flag that checks if the player is moving
+
         // Left and right movement
         if (keyLEFT.isDown && !this.isThrowingBomb && !this.scene.readyBattle) {
             this.attackHitbox.setPosition(this.x - 15, this.y);
             this.setVelocityX(-this.maxSpeed)
             this.setFlipX(true)
+            isMoving = true;
 
             if (this.body.blocked.down) {
                 if (this.anims.currentAnim.key !== 'stickman-walk' || !this.anims.isPlaying) {
@@ -43,6 +48,7 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
             this.attackHitbox.setPosition(this.x + 15, this.y);
             this.setVelocityX(this.maxSpeed)
             this.resetFlip(true)
+            isMoving = true;
 
             if (this.body.blocked.down) {
                 if (this.anims.currentAnim.key !== 'stickman-walk' || !this.anims.isPlaying) {
@@ -54,10 +60,12 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
             this.setVelocityX(0) // Stop moving when no keys are pressed
         }
 
+
         // Jumping
         if (Phaser.Input.Keyboard.JustDown(keyJUMP) && this.body.blocked.down && !this.isThrowingBomb && !this.scene.readyBattle) {
             this.setVelocityY(-this.maxJumpSpeed) // Apply upward force
             this.anims.play('stickman-jump') // Jump animation
+            isMoving = true;
 
             // Jump SFX
             this.jumpSound = this.scene.sound.add('jump');
@@ -70,6 +78,7 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
         if (Phaser.Input.Keyboard.JustDown(keyPUNCH) && this.body.blocked.down && !this.isThrowingBomb && !this.scene.readyBattle) {
             if (this.body.velocity.x == 0) {
                 this.anims.play('stickman-punch').chain('stickman-battle')
+                isMoving = true;
             }
 
         }
@@ -79,6 +88,7 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
         if (Phaser.Input.Keyboard.JustDown(keyKICK) && this.body.blocked.down && !this.isThrowingBomb && !this.scene.readyBattle) {
             if (this.body.velocity.x == 0) {
                 this.anims.play('stickman-kick').chain('stickman-battle') // Kicking animation
+                isMoving = true;
             }
 
         }
@@ -100,10 +110,21 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
                     this.anims.play('stickman-battle')
                     this.isThrowingBomb = false;
                 })
+
+                isMoving = true;
             }
 
         }
 
+
+        // Idle Animation Checker
+        if (!isMoving && this.body.velocity.x === 0 && this.body.blocked.down) {
+            if (!this.isIdle) {
+                this.startIdleTimer(); // Start timer when player is not moving
+            }
+        } else {
+            this.cancelIdleTimer(); // Cancel timer if player moves
+        }
     }
 
 
@@ -117,4 +138,28 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
         this.scene.physics.add.overlap(this.bomb, this.scene.hunnyBunny, this.scene.handleAttack, null, this.scene);
     }
 
+
+
+    // Start idle timer if player doesn't move
+    startIdleTimer() {
+        this.isIdle = true;
+        this.idleTimer = this.scene.time.delayedCall(3000, () => {
+            this.anims.play('stickman-idle');
+            this.isIdle = false;
+        }, [], this);
+    }
+
+    
+
+    // Cancel idle timer if player moves
+    cancelIdleTimer() {
+        if (this.idleTimer) {
+            this.idleTimer.remove(false);
+            this.idleTimer = null;
+            this.isIdle = false;
+        }
+    }
 }
+
+
+
