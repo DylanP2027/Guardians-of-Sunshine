@@ -8,12 +8,13 @@ class Menu extends Phaser.Scene {
 
     preload() {
         enteredMenuScene = false;
+
         // Load UI
         this.load.path = './assets/UI/';
 
-        // Load Icon spritesheets
         this.load.image('LifeIcon', 'UI_life.png')
         this.load.image('BombIcon', 'UIBomb.png')
+        this.load.image('UIBackground', 'UI.png')
 
         // Load Main Menu spritesheet
         this.load.spritesheet('mainMenuSpriteSheet', 'mainMenuBackground.png', {
@@ -40,11 +41,16 @@ class Menu extends Phaser.Scene {
         // Load Instructions Screen
         this.load.image('instructions', 'instructions.png');
 
+
         // Load Audio
         this.load.path = './assets/sfx/';
-        this.load.audio('gameOverSound', 'gameOverSound.mp3')
+
+        // Load Music
         this.load.audio('gameMusic', 'music/gameMusic.mp3');
         this.load.audio('victoryMusic', 'music/victoryMusic.mp3');
+
+        // Load SFX
+        this.load.audio('gameOverSound', 'gameOverSound.mp3')
         this.load.audio('jump', 'jump.mp3');
         this.load.audio('sleepySamEat', 'sleepySamEat.mp3');
         this.load.audio('useLife', 'useLife.mp3');
@@ -63,12 +69,14 @@ class Menu extends Phaser.Scene {
         
         this.load.tilemapTiledJSON('tilemapJSON', 'GuardiansOfSunshineFinal.json')
 
+        // Load Sun Spritesheet
         this.load.spritesheet('sunSpriteSheet', 'sunSpriteSheet.png', {
             frameWidth: 32,
             frameHeight: 34,
             startFrame: 0,
             endFrame: 1,
         })
+
 
         // Load Sprites
         this.load.path = './assets/';
@@ -77,16 +85,9 @@ class Menu extends Phaser.Scene {
         this.load.atlas('stickman', 'stickman.png', 'stickman.json')
         this.load.atlas('bombThrow', 'bombThrow.png', 'bombThrow.json')
 
-        // Load Score
+        // Load Score Images on Boss Kill
         this.load.image('score500', 'score500.png')
         this.load.image('score800', 'score800.png')
-
-        this.load.spritesheet('bomb', 'bomb.png', {
-            frameWidth: 12,
-            frameHeight: 21,
-            startFrame: 0,
-            endFrame: 2,
-        })
 
         // Load enemies
         this.load.image('sleepySam', 'sleepySam.png');
@@ -105,18 +106,25 @@ class Menu extends Phaser.Scene {
         })
         this.load.atlas('hunnyBunnyCreate', 'hunnyBunnyCreate.png', 'hunnyBunnyCreate.json');
         this.load.image('bouncyBee', 'bouncyBee.png');
+        
+        // Load Bomb sprite
+        this.load.spritesheet('bomb', 'bomb.png', {
+            frameWidth: 12,
+            frameHeight: 21,
+            startFrame: 0,
+            endFrame: 2,
+        })
 
-
-        // Load UI
-        this.load.path = './assets/UI/';
-        this.load.image('UIBackground', 'UI.png')
 
         // Load bitmap font
         this.load.path = './assets/';
         this.load.bitmapFont('numbersFont', 'numbersFont.png', 'numbersFont.xml')
     }
 
+
+
     create() {
+        // Stickman animations
         this.anims.create({
             key: 'stickman-idle',
             frames: this.anims.generateFrameNames('stickman',{prefix: 'idle', start: 0, end:3}),
@@ -190,6 +198,8 @@ class Menu extends Phaser.Scene {
             repeat: -1,
         });
 
+
+        // Hunny Bunny animations
         this.anims.create({
             key: 'HBSpawn',
             frames: this.anims.generateFrameNames('hunnyBunnyCreate', {prefix: 'HB', start: 0, end: 42}),
@@ -205,6 +215,16 @@ class Menu extends Phaser.Scene {
             repeat: -1,
         });
 
+        // Sleepy Sam Animation
+        this.anims.create({
+            key: 'samLose',
+            frames: this.anims.generateFrameNumbers('sleepySamLose',{start: 0, end:31}),
+            frameRate: 10,
+            repeat: 0,
+        })
+
+
+        // Sun animation
         this.anims.create({
             key: 'sun',
             frames: this.anims.generateFrameNumbers('sunSpriteSheet',{start: 0, end:1}),
@@ -212,12 +232,6 @@ class Menu extends Phaser.Scene {
             repeat: -1,
         })
 
-        this.anims.create({
-            key: 'samLose',
-            frames: this.anims.generateFrameNumbers('sleepySamLose',{start: 0, end:31}),
-            frameRate: 10,
-            repeat: 0,
-        })
 
         if(enteredMenuScene != true) {
 
@@ -231,7 +245,7 @@ class Menu extends Phaser.Scene {
                 repeat: -1
             });
 
-            // Background Music
+            // Background Game Music
             this.gameMusic = this.sound.add('gameMusic');
             this.gameMusic.volume = 0.10;
             this.gameMusic.loop = true;
@@ -239,26 +253,26 @@ class Menu extends Phaser.Scene {
             this.registry.set('gameMusic', this.gameMusic); // Store in registry
         }
 
-        // Create the main menu sprite and position it at the center
-        this.mainMenuSprite = this.add.sprite(this.scale.width / 2, this.scale.height / 2, 'mainMenuSpriteSheet');
-       
-        // Set the sprite's origin to the center
-        this.mainMenuSprite.setOrigin(0.5, 0.5);
 
-        // Scale to fit the height of the screen while maintaining aspect ratio
-        let scaleFactor = this.scale.height / this.mainMenuSprite.height;
-        this.mainMenuSprite.setScale(scaleFactor);
+        // Create the main menu sprite
+        this.mainMenuSprite = this.add.sprite(this.scale.width / 2, this.scale.height / 2, 'mainMenuSpriteSheet')
+        this.mainMenuSprite.setOrigin(0.5, 0.5)
+        let scaleFactor = this.scale.height / this.mainMenuSprite.height
+        this.mainMenuSprite.setScale(scaleFactor)
+        this.mainMenuSprite.play('mainMenu') // Play the animation
 
-        // Play the animation
-        this.mainMenuSprite.play('mainMenu');
 
         // Define keys for menu navigation
         this.keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
 
+
+
     update() {
         if (Phaser.Input.Keyboard.JustDown(this.keySPACE)) {
-            this.scene.start('instructionsScene');
+            this.scene.start('instructionsScene'); // Scene transition
+
+            // SFX
             this.jumpSound = this.sound.add('jump');
             this.jumpSound.volume = 0.4;
             this.jumpSound.play()
