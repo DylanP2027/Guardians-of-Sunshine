@@ -60,6 +60,8 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.stick, collisionLayer);
         this.physics.add.collider(this.stick, deathLayer, this.handleDeath, null, this);
 
+        // Player & Coin Collision
+
 
         // BouncyBee setup
         const bouncyBeeSpawn = map.findObject('bouncyBeeSpawn', obj => obj.name === 'bouncyBeeSpawn');
@@ -140,7 +142,7 @@ class Play extends Phaser.Scene {
         // Create UI camera
         this.UICamera = this.cameras.add(0, 0, this.scale.width, this.scale.height);
         this.UICamera.setScroll(0, 0); // Fixed camera
-        this.UICamera.ignore([backgroundLayer, collisionLayer, deathLayer, this.stick, this.bouncyBee, this.spawnHB]); // Ignore world/game elements
+        this.UICamera.ignore([backgroundLayer, collisionLayer, deathLayer, this.stick, this.bouncyBee, this.spawnHB, this.physics.world.debugGraphic]); // Ignore world/game elements
 
         // Create UI container for UI elements
         this.UIContainer = this.add.container(0, 0);
@@ -253,6 +255,7 @@ class Play extends Phaser.Scene {
 
                 if (this.stick.anims.currentAnim.key === 'stickman-kick' && this.punchedBee) {
                     enemy.destroy()
+                    this.currentScore += 500
                 }
 
                 break;
@@ -260,6 +263,7 @@ class Play extends Phaser.Scene {
             case this.hunnyBunny:
                 this.stick.HBDied = true;
                 enemy.destroy()
+                this.currentScore += 800
                 this.stick.bomb.destroy()
 
                 break;
