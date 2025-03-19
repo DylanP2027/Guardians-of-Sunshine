@@ -56,6 +56,10 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
         if (Phaser.Input.Keyboard.JustDown(keyJUMP) && this.body.blocked.down && !this.isThrowingBomb && !this.scene.readyBattle) {
             this.setVelocityY(-this.maxJumpSpeed) // Apply upward force
             this.anims.play('stickman-jump')
+
+            this.jumpSound = this.scene.sound.add('jump');
+            this.jumpSound.volume = 0.3;
+            this.jumpSound.play();
         }
 
         //Punching

@@ -23,7 +23,7 @@ class Win extends Phaser.Scene {
 
         // Victory music
         this.victoryMusic = this.sound.add('victoryMusic');
-        this.victoryMusic.volume = 0.15;
+        this.victoryMusic.volume = 0.125;
         this.victoryMusic.play();
         this.registry.set('victoryMusic', this.victoryMusic); // Store in registry
     }

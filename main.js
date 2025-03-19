@@ -1,8 +1,30 @@
-// Name: Justin Fong and Dylan Paras
+// Names: Justin Fong and Dylan Paras
 // Title: Guardians of Sunshine
 // 
 //
 //
+// Technical Execution:
+//    Physics System - Arcade Physics
+//    Cameras - Main Camera & UI Camera
+//    Animation Manager
+//    Timers
+//    Tilemaps
+//    Bitmap Font (For Score During Gameplay
+//
+//
+//
+// Polish & Style:
+//    Since we used arcade physics, we had to get creative with our slopes and we believe our
+//    implementation using several circular hitboxes was a creative solution instead of reconfiguring
+//    our entire project to switch to matter.js.
+//
+//    Our artstyle is quite polished and cohesive. We attempted to be as close to the as possible
+//    within reason, redrawing the somewhat oddly shaped handrawn "sprites" into actual sprites.
+//    
+//    The final boss, Sleepy Sam, has a unique battle, forcing the player into a combo move. The
+//    unique method of combat is a key part to the episode Guardians of Sunshine is featured in
+//    being a prominent part of how Finn and Jake are able to send the enemies back into the game.
+
 
 
 let config = {
