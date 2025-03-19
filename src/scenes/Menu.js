@@ -56,12 +56,23 @@ class Menu extends Phaser.Scene {
         
         this.load.tilemapTiledJSON('tilemapJSON', 'GuardiansOfSunshineFinal.json')
 
+        this.load.spritesheet('sunSpriteSheet', 'sunSpriteSheet.png', {
+            frameWidth: 32,
+            frameHeight: 34,
+            startFrame: 0,
+            endFrame: 1,
+        })
+
         // Load Sprites
         this.load.path = './assets/';
 
         // Load stickman atlas
         this.load.atlas('stickman', 'stickman.png', 'stickman.json')
         this.load.atlas('bombThrow', 'bombThrow.png', 'bombThrow.json')
+
+        // Load Score
+        this.load.image('score500', 'score500.png')
+        this.load.image('score800', 'score800.png')
 
         this.load.spritesheet('bomb', 'bomb.png', {
             frameWidth: 12,
@@ -180,6 +191,13 @@ class Menu extends Phaser.Scene {
             frameRate: 2,
             repeat: -1,
         });
+
+        this.anims.create({
+            key: 'sun',
+            frames: this.anims.generateFrameNumbers('sunSpriteSheet',{start: 0, end:1}),
+            frameRate: 1,
+            repeat: -1,
+        })
 
         if(enteredMenuScene != true) {
 

@@ -51,6 +51,11 @@ class Play extends Phaser.Scene {
         // Player spawn point
         this.playerSpawn = map.findObject('playerSpawn', obj => obj.name === 'playerSpawn');
 
+        // Sun Spawn
+        this.sunSpawn = map.findObject('sunSpawn', obj => obj.name === 'sunSpawn');
+        this.sun = this.add.sprite(this.sunSpawn.x, this.sunSpawn.y, 'sunSpriteSheet');
+        this.sun.play('sun'); // Plays the sun animation
+
         // Create player
         this.stick = new Stickman(this, this.playerSpawn.x, this.playerSpawn.y, 'stickman', 0);
         this.stick.setBodySize(this.stick.width * 0.5, this.stick.height, true);
@@ -195,7 +200,7 @@ class Play extends Phaser.Scene {
         // Create UI camera
         this.UICamera = this.cameras.add(0, 0, this.scale.width, this.scale.height);
         this.UICamera.setScroll(0, 0); // Fixed camera
-        this.UICamera.ignore([backgroundLayer, collisionLayer, deathLayer, this.stick, this.bouncyBee, this.spawnHB, this.physics.world.debugGraphic]); // Ignore world/game elements
+        this.UICamera.ignore([backgroundLayer, collisionLayer, deathLayer, this.stick, this.bouncyBee, this.spawnHB, this.physics.world.debugGraphic, this.sun]); // Ignore world/game elements
 
         // Create UI container for UI elements
         this.UIContainer = this.add.container(0, 0);
@@ -307,17 +312,31 @@ class Play extends Phaser.Scene {
                 }
 
                 if (this.stick.anims.currentAnim.key === 'stickman-kick' && this.punchedBee) {
+                    this.score500 = this.add.image(this.bouncyBee.x, this.bouncyBee.y, 'score500')
                     enemy.destroy()
                     this.currentScore += 500
+
+                    this.time.delayedCall(3000, () => {
+                        if (this.score500) {
+                            this.score500.destroy();
+                        }
+                    });
                 }
 
                 break;
                 
             case this.hunnyBunny:
                 this.stick.HBDied = true;
+                this.score800 = this.add.image(this.hunnyBunny.x, this.hunnyBunny.y, 'score800')
                 enemy.destroy()
                 this.currentScore += 800
                 this.stick.bomb.destroy()
+
+                this.time.delayedCall(3000, () => {
+                    if (this.score800) {
+                        this.score800.destroy();
+                    }
+                });
 
                 break;
 
