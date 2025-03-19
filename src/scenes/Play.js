@@ -1,7 +1,7 @@
 class Play extends Phaser.Scene {
 
     constructor() {
-        super("playScene"); // Scene key
+        super("playScene");
     }
 
     init() {
@@ -10,19 +10,18 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        // Coins
+        // Coins Variables
         this.coins = 9
         this.coinSpawns = []
         this.coinAnimations = []
 
-        // Lives counter
+        // UI Variables
         this.currentLives = 3;
         this.currentBombs = 1;
         this.life_icons = []
         this.bomb_icons = []
-        this.isDead = false
 
-        // Score values
+        // Score Tracking Variables
         this.startingScore = 0
         this.currentScore = 0
 
@@ -30,6 +29,7 @@ class Play extends Phaser.Scene {
         this.readyBattle = false
         this.samBattleOutcome = false
         this.loseSoundPlayed = false
+        this.isDead = false
 
         // Define controls
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -58,16 +58,14 @@ class Play extends Phaser.Scene {
         collisionLayer.setCollisionByProperty({ collides: true });
         deathLayer.setCollisionByProperty({ death: true })
 
-        // Player spawn point
-        this.playerSpawn = map.findObject('playerSpawn', obj => obj.name === 'playerSpawn');
-
         // Sun Spawn
         this.sunSpawn = map.findObject('sunSpawn', obj => obj.name === 'sunSpawn');
         this.sun = this.add.sprite(this.sunSpawn.x, this.sunSpawn.y, 'sunSpriteSheet');
         this.sun.play('sun'); // Plays the sun animation
 
         // Create player
-        this.stick = new Stickman(this, this.playerSpawn.x, this.playerSpawn.y, 'stickman', 0);
+        const playerSpawn = map.findObject('playerSpawn', obj => obj.name === 'playerSpawn');
+        this.stick = new Stickman(this, playerSpawn.x, playerSpawn.y, 'stickman', 0);
         this.stick.setBodySize(this.stick.width * 0.5, this.stick.height, true);
         this.stick.anims.play('stickman-idle');
 
@@ -100,7 +98,6 @@ class Play extends Phaser.Scene {
                 }, null, this);
             }
         }       
-
 
         // BouncyBee setup
         const bouncyBeeSpawn = map.findObject('bouncyBeeSpawn', obj => obj.name === 'bouncyBeeSpawn');
@@ -171,9 +168,7 @@ class Play extends Phaser.Scene {
             this.stick.anims.setCurrentFrame(this.anims.get('stickman-walk').frames[0])
             this.stick.maxJumpSpeed = 0
             this.stick.maxSpeed = 0
-            this.readyBattle = true;
-
-            
+            this.readyBattle = true;            
         }, null, this);
 
         // SleepySam Dance combo
@@ -230,7 +225,7 @@ class Play extends Phaser.Scene {
         // Create UI camera
         this.UICamera = this.cameras.add(0, 0, this.scale.width, this.scale.height);
         this.UICamera.setScroll(0, 0); // Fixed camera
-        this.UICamera.ignore([backgroundLayer, collisionLayer, deathLayer, this.stick, this.bouncyBee, this.spawnHB, this.physics.world.debugGraphic, this.sun]); // Ignore world/game elements
+        this.UICamera.ignore([backgroundLayer, collisionLayer, deathLayer, this.stick, this.bouncyBee, this.spawnHB, this.sun]); // Ignore world/game elements
 
         // Create UI container for UI elements
         this.UIContainer = this.add.container(0, 0);
@@ -274,15 +269,17 @@ class Play extends Phaser.Scene {
 
     }
 
+    // Handles amount of bombs and UI accordingly
     useBomb(){
         this.currentBombs -= 1;
         this.bomb_icons[this.currentBombs].destroy()
     }
 
-    // Handle player attack
-    handleAttack(hitbox, enemy) {
+    // Handle player attacks on enemies
+    handleAttack(enemy) {
 
         switch (enemy) {
+            // BouncyBee must be killed with the punch and kick seperately (done to try to reflect more accuracy to the show)
             case this.bouncyBee:
 
                 if (this.stick.anims.currentAnim.key === 'stickman-punch') {
@@ -307,7 +304,8 @@ class Play extends Phaser.Scene {
                 }
 
                 break;
-                
+            
+            // HunnyBunny must be killed with the bomb
             case this.hunnyBunny:
                 this.stick.HBDied = true;
                 this.score800 = this.add.image(this.hunnyBunny.x, this.hunnyBunny.y, 'score800')
@@ -334,9 +332,10 @@ class Play extends Phaser.Scene {
 
     }
     
+    // Handles the player encounter with SleepySam
     checkSamBattle(startBattle, win){
         if(startBattle && !win){
-            this.loseTimer = this.time.delayedCall(500, () => {
+            this.loseTimer = this.time.delayedCall(20000, () => {
                 this.sleepySam.setVisible(false)
                 this.stick.setVisible(false)
                 this.samLoseAnim.setVisible(true)
@@ -360,6 +359,7 @@ class Play extends Phaser.Scene {
         }
     }
 
+    // Handles player dying to pit/enemy death 
     handleDeath(type) {
 
         if(this.currentLives <= 0){
@@ -403,6 +403,7 @@ class Play extends Phaser.Scene {
         }
     }
 
+    // Handles amount of lives and UI accordingly
     loseLife(){
         this.currentLives -= 1;
         this.life_icons[this.currentLives].destroy()
