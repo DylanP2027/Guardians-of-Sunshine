@@ -23,11 +23,9 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
-
-        let playerInput = false
         
         // Left and right movement
-        if (keyLEFT.isDown && !this.isThrowingBomb) {
+        if (keyLEFT.isDown && !this.isThrowingBomb && !this.scene.readyBattle) {
             this.attackHitbox.setPosition(this.x - 15, this.y);
             this.setVelocityX(-this.maxSpeed)
             this.setFlipX(true)
@@ -38,7 +36,7 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
                 }
             }
 
-        } else if (keyRIGHT.isDown && !this.isThrowingBomb) {
+        } else if (keyRIGHT.isDown && !this.isThrowingBomb && !this.scene.readyBattle) {
             this.attackHitbox.setPosition(this.x + 15, this.y);
             this.setVelocityX(this.maxSpeed)
             this.resetFlip(true)
@@ -55,13 +53,13 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
         }
 
         // Jumping
-        if (Phaser.Input.Keyboard.JustDown(keyJUMP) && this.body.blocked.down && !this.isThrowingBomb) {
+        if (Phaser.Input.Keyboard.JustDown(keyJUMP) && this.body.blocked.down && !this.isThrowingBomb && !this.scene.readyBattle) {
             this.setVelocityY(-this.maxJumpSpeed) // Apply upward force
             this.anims.play('stickman-jump')
         }
 
         //Punching
-        if (Phaser.Input.Keyboard.JustDown(keyPUNCH) && this.body.blocked.down && !this.isThrowingBomb) {
+        if (Phaser.Input.Keyboard.JustDown(keyPUNCH) && this.body.blocked.down && !this.isThrowingBomb && !this.scene.readyBattle) {
             if (this.body.velocity.x == 0) {
                 this.anims.play('stickman-punch').chain('stickman-battle')
             }
@@ -69,7 +67,7 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
         }
 
         // Kicking
-        if (Phaser.Input.Keyboard.JustDown(keyKICK) && this.body.blocked.down && !this.isThrowingBomb) {
+        if (Phaser.Input.Keyboard.JustDown(keyKICK) && this.body.blocked.down && !this.isThrowingBomb && !this.scene.readyBattle) {
             if (this.body.velocity.x == 0) {
                 this.anims.play('stickman-kick').chain('stickman-battle')
             }
@@ -94,21 +92,6 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
             }
 
         }
-
-        
-        // Dance Combo Handling Test
-
-        this.scene.input.keyboard.createCombo([keyDanceUP, keyDanceDOWN, keyDanceLEFT, keyDanceRIGHT], { resetOnMatch: true });
-
-        this.scene.input.keyboard.createCombo([keyDanceUP, keyDanceDOWN, keyDanceLEFT, keyDanceLEFT, keyDanceRIGHT, keyDanceRIGHT, 
-            keyDanceDOWN, keyDanceUP, keyDanceDOWN, keyDanceUP, keyDanceLEFT, keyDanceRIGHT, keyDanceLEFT, keyDanceDOWN, keyDanceUP,
-            keyDanceUP, keyDanceDOWN, keyDanceUP], { resetOnMatch: true });
-
-        this.scene.input.keyboard.once('keycombomatch', ()=> {
-
-            console.log('Dance Combo!');
-
-        });
 
     }
 

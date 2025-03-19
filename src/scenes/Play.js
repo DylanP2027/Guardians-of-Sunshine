@@ -56,6 +56,11 @@ class Play extends Phaser.Scene {
         this.stick.setBodySize(this.stick.width * 0.5, this.stick.height, true);
         this.stick.anims.play('stickman-idle');
 
+        // Camera setup
+        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+        this.cameras.main.startFollow(this.stick, true, 0.5, 0.5, 0, 45);
+        this.cameras.main.setZoom(3);
+        this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
         // Player collision
         this.physics.add.collider(this.stick, collisionLayer);
@@ -118,15 +123,45 @@ class Play extends Phaser.Scene {
         this.sleepySam.setImmovable(true)
         this.physics.add.collider(this.sleepySam, collisionLayer);
 
-        this.samBattle = this.physics.add.staticSprite(sleepySamSpawn.x - 50, sleepySamSpawn.y - 20, null)
-        this.samBattle.setBodySize(60, 120)
+        this.samBattle = this.physics.add.staticSprite(sleepySamSpawn.x - 30, sleepySamSpawn.y - 20, null)
+        this.samBattle.setBodySize(30, 120)
         this.samBattle.setVisible(false)
 
-        // Camera setup
-        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        this.cameras.main.startFollow(this.stick, true, 0.5, 0.5, 0, 45);
-        this.cameras.main.setZoom(3);
-        this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+        this.physics.add.overlap(this.stick, this.samBattle, () => {
+            this.cameras.main.setZoom(5)
+            this.stick.anims.stop()
+            this.stick.anims.setCurrentFrame(this.anims.get('stickman-walk').frames[0])
+            this.stick.maxJumpSpeed = 0
+            this.stick.maxSpeed = 0
+            this.readyBattle = true;
+
+            //need to handle later when losing to reset the camera and other stats
+            //need to handle when winning
+        }, null, this);
+
+        // SleepySam Dance combo
+        this.input.keyboard.createCombo([keyDanceUP, keyDanceDOWN, keyDanceLEFT, keyDanceRIGHT], 
+            { 
+                resetOnMatch: true,
+            });
+
+        this.input.keyboard.createCombo([keyDanceUP, keyDanceDOWN, keyDanceLEFT, keyDanceLEFT, keyDanceRIGHT, keyDanceRIGHT, 
+            keyDanceDOWN, keyDanceUP, keyDanceDOWN, keyDanceUP, keyDanceLEFT, keyDanceRIGHT, keyDanceLEFT, keyDanceDOWN, keyDanceUP,
+            keyDanceUP, keyDanceDOWN, keyDanceUP], 
+            { 
+                resetOnMatch: true,
+                maxKeyDelay: 1500
+            });
+
+        this.input.keyboard.on('keycombomatch', ()=> {
+
+            if(this.readyBattle){
+                console.log('Dance Combo!');
+            }
+
+        });
+
+
 
         // Slope definition for manual handling, defined with multiple slopes for pseudo slope collision
         this.slopes = [
@@ -185,7 +220,7 @@ class Play extends Phaser.Scene {
         this.scoreText = this.add.bitmapText(this.UIBackground.displayWidth / 2, 75, 'numbersFont', this.currentScore, 98).setOrigin(0.5,0.5).setDepth(150);
 
         //Testing Purposes for convenience
-        this.stick.setPosition(hunnyBunnsleepySamSpawnySpawn.x - 100, sleepySamSpawn.y - 50)
+        this.stick.setPosition(sleepySamSpawn.x - 100, sleepySamSpawn.y - 50)
     }
 
     update() {
@@ -249,6 +284,7 @@ class Play extends Phaser.Scene {
     loseLife(){
         this.currentLives -= 1;
         this.life_icons[this.currentLives].destroy()
+        this.readyBattle = false;
 
         if(this.currentLives <= 0){
             this.scene.start('gameOverScene')
