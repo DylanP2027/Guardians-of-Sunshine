@@ -24,17 +24,26 @@ class Menu extends Phaser.Scene {
 
         // Load Win Screen
         this.load.image('youWin', 'youWin.png');
+        this.load.image('pressSpaceForCredits', 'pressSpaceForCredits.png')
 
         // Load Current Level Scene
         this.load.image('currentLevel', 'level1.png');
 
         // Load GameOver Screen
         this.load.image('youLose', 'youLose.png');
+        this.load.image('pressR', 'pressR.png')
+
+        // Load Credits Screen
+        this.load.image('credits', 'credits.png')
+
+        // Load Instructions Screen
+        this.load.image('instructions', 'instructions.png');
 
         // Load Audio
         this.load.path = './assets/sfx/';
         this.load.audio('gameOverSound', 'gameOverSound.mp3')
         this.load.audio('gameMusic', 'gameMusic.mp3');
+        this.load.audio('victoryMusic', 'victoryMusic.mp3');
 
         // Load for map
         this.load.path = './assets/map/';
@@ -77,9 +86,6 @@ class Menu extends Phaser.Scene {
         // Load UI
         this.load.path = './assets/UI/';
         this.load.image('UIBackground', 'UI.png')
-
-        // Load Instructions Screen
-        this.load.image('instructions', 'instructions.png');
 
         // Load bitmap font
         this.load.path = './assets/';

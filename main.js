@@ -17,7 +17,7 @@ let config = {
         debug: true
       }
     },
-    scene: [ Menu, Instructions, CurrentLevel, Play, GameOver, Win ]
+    scene: [ Menu, Instructions, CurrentLevel, Play, GameOver, Win, Credits ]
   }
   
   let game = new Phaser.Game(config) // Sets up the new phaser game.

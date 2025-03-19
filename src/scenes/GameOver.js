@@ -41,7 +41,7 @@ class GameOver extends Phaser.Scene {
         // }
 
         if (this.callNextScene) {
-            this.scene.start('playScene') // Returns to the menu
+            this.scene.start('menuScene') // Returns to the menu
         }
     }
 
