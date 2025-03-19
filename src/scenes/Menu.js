@@ -215,7 +215,7 @@ class Menu extends Phaser.Scene {
         this.anims.create({
             key: 'samLose',
             frames: this.anims.generateFrameNumbers('sleepySamLose',{start: 0, end:31}),
-            frameRate: 3,
+            frameRate: 5,
             repeat: 0,
         })
 

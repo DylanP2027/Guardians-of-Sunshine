@@ -135,6 +135,9 @@ class Play extends Phaser.Scene {
         this.samBattle.setBodySize(30, 120)
         this.samBattle.setVisible(false)
 
+        this.samLoseAnim = this.add.sprite(sleepySamSpawn.x - 11, sleepySamSpawn.y - 9, 'sleepySam').setOrigin(0.5, 0.5)
+        this.samLoseAnim.setVisible(false)
+
         this.physics.add.overlap(this.stick, this.samBattle, () => {
             this.cameras.main.setZoom(5)
             this.stick.anims.stop()
@@ -143,8 +146,7 @@ class Play extends Phaser.Scene {
             this.stick.maxSpeed = 0
             this.readyBattle = true;
 
-            //need to handle later when losing to reset the camera and other stats
-            //need to handle when winning
+            
         }, null, this);
 
         // SleepySam Dance combo
@@ -227,9 +229,6 @@ class Play extends Phaser.Scene {
 
         // Set text
         this.scoreText = this.add.bitmapText(this.UIBackground.displayWidth / 2, 75, 'numbersFont', this.currentScore, 98).setOrigin(0.5,0.5).setDepth(150);
-
-        //Testing Purposes for convenience
-        // this.stick.setPosition(sleepySamSpawn.x - 100, sleepySamSpawn.y - 50)
     }
 
     update() {
@@ -314,12 +313,22 @@ class Play extends Phaser.Scene {
 
     checkSamBattle(startBattle, win){
         if(startBattle && !win){
-            this.loseTimer = this.time.delayedCall(20000, () => {
-                //replace with death animation
-                this.scene.start('gameOverScene')
+            this.loseTimer = this.time.delayedCall(500, () => {
+                this.sleepySam.setVisible(false)
+                this.stick.setVisible(false)
+                this.samLoseAnim.setVisible(true)
+                //sound is getting base boosted here
+                if(!this.samLoseAnim.anims.isPlaying){
+                    this.samLoseAnim.anims.play('samLose').once('animationcomplete', () => {
+                        this.scene.start('gameOverScene')
+                    }, this)
+                }
             }); 
         }else if(startBattle && win){
-            this.loseTimer.destroy()
+            if (this.loseTimer) {
+                this.loseTimer.remove();
+                this.loseTimer = null;
+            }
             this.scene.start('winScene')
         }
     }
