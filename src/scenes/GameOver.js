@@ -35,11 +35,6 @@ class GameOver extends Phaser.Scene {
     }
 
     update() {
-        // if (Phaser.Input.Keyboard.JustDown(keyRESET)) {
-        //     this.scene.start('menuScene') // Returns to the menu
-        //     // this.menuSelectionSoundReturn.play()
-        // }
-
         if (this.callNextScene) {
             this.scene.start('menuScene') // Returns to the menu
         }
