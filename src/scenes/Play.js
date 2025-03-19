@@ -276,7 +276,7 @@ class Play extends Phaser.Scene {
     }
 
     // Handle player attacks on enemies
-    handleAttack(enemy) {
+    handleAttack(hitbox, enemy) {
 
         switch (enemy) {
             // BouncyBee must be killed with the punch and kick seperately (done to try to reflect more accuracy to the show)
