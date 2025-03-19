@@ -1,11 +1,15 @@
 class CurrentLevel extends Phaser.Scene {
     constructor() {
-        super("currentLevelScene") // Basically gives names the key to this object menuScene
+        super("currentLevelScene")
     }
+
+
 
     init() {
         this.callNextScene = false; // The flag to trigger the next scene
     }
+
+
 
     create() {
         // Background Color (Black)
@@ -14,7 +18,7 @@ class CurrentLevel extends Phaser.Scene {
         // You Win Sprite
         this.currentLevelSprite = this.add.sprite(this.scale.width / 2, this.scale.height / 2, 'currentLevel').setScale(5);
 
-        // Event to track 2 seconds
+        // Event to track 3 seconds
         this.time.addEvent({
             delay: 3000,
             callback: this.updateCallNextScene,
@@ -23,12 +27,17 @@ class CurrentLevel extends Phaser.Scene {
         })
     }
 
+
+
     update() {
         if (this.callNextScene) {
             this.scene.start('playScene') // Returns to the menu
         }
     }
 
+
+
+    // Helper function to trigger callNextScene flag
     updateCallNextScene() {
         this.callNextScene = true;
     }

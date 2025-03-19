@@ -44,8 +44,8 @@ let config = {
   
   let game = new Phaser.Game(config) // Sets up the new phaser game.
   
-  let keySPACE, keyRESET, keyJUMP, keyUP, keyLEFT, keyRIGHT, keyABILITY, keyPUNCH, keyKICK // Reserved keyboard bindings.
-  let keyDanceUP, keyDanceDOWN, keyDanceRIGHT, keyDanceLEFT
+  let keySPACE, keyRESET, keyJUMP, keyUP, keyLEFT, keyRIGHT, keyABILITY, keyPUNCH, keyKICK // Reserved keyboard bindings
+  let keyDanceUP, keyDanceDOWN, keyDanceRIGHT, keyDanceLEFT //Reserved Bindings for Dance Combo
   
   // Sets the UI size
   let borderUISize = game.config.height / 15

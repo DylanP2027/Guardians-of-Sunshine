@@ -3,12 +3,16 @@ class GameOver extends Phaser.Scene {
         super("gameOverScene") // Basically gives names the key to this object menuScene
     }
 
+
+
     init() {
-        this.callNextScene = false; // The flag to trigger the next scene
+        this.callNextScene = false; // The flag to trigger the next scene, used for the timer
     }
 
+
+
     create() {
-        // Stop music
+        // Stops the game music
         let gameMusic = this.registry.get('gameMusic');
         gameMusic.stop();
 
@@ -18,14 +22,12 @@ class GameOver extends Phaser.Scene {
         // You Win Sprite
         this.youLoseSprite = this.add.sprite(this.scale.width / 2, this.scale.height / 2, 'youLose').setScale(8);
 
-        // Defines control for this scene
-        // keyRESET = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
-
         // Game over SFX
         this.gameMusic = this.sound.add('gameOverSound');
         this.gameMusic.volume = 0.2;
         this.gameMusic.play();
         
+        // 3 second timer to call next scene
         this.time.addEvent({
             delay: 3000,
             callback: this.updateCallNextScene,
@@ -34,12 +36,17 @@ class GameOver extends Phaser.Scene {
         })
     }
 
+
+
     update() {
         if (this.callNextScene) {
             this.scene.start('menuScene') // Returns to the menu
         }
     }
 
+
+
+    // Helper function to trigger the callNextScene flag
     updateCallNextScene() {
         this.callNextScene = true;
     }

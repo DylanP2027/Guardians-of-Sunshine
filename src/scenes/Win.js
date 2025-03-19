@@ -1,7 +1,9 @@
 class Win extends Phaser.Scene {
     constructor() {
-        super("winScene") // Basically gives names the key to this object menuScene
+        super("winScene")
     }
+
+
 
     create() {
         // Background Color (Black)
@@ -19,7 +21,6 @@ class Win extends Phaser.Scene {
 
         // Defines control for this scene
         this.keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        this.keyRESET = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
 
         // Victory music
         this.victoryMusic = this.sound.add('victoryMusic');
@@ -28,9 +29,11 @@ class Win extends Phaser.Scene {
         this.registry.set('victoryMusic', this.victoryMusic); // Store in registry
     }
 
+
+
     update() {
         if (Phaser.Input.Keyboard.JustDown(this.keySPACE)) {
-            this.scene.start('creditsScene') // Returns to the menu
+            this.scene.start('creditsScene') // Sends to menu scene
         }
     }
 }
