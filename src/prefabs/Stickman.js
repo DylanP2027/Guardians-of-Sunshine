@@ -18,9 +18,14 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
         this.attackHitbox.setBodySize(this.width * 0.5, this.height * 0.9)
         this.attackHitbox.body.allowGravity = false
         this.attackHitbox.setVisible(false)
+
+        this.anims.play('stickman-idle');
     }
 
     update() {
+
+        let playerInput = false
+        
         // Left and right movement
         if (keyLEFT.isDown && !this.isThrowingBomb) {
             this.attackHitbox.setPosition(this.x - 15, this.y);
@@ -47,8 +52,6 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
         } else {
             // Stop moving when no keys are pressed
             this.setVelocityX(0)
-
-            //temp idle, want to implement a timer that switches to an idle animation later
         }
 
         // Jumping
@@ -91,6 +94,21 @@ class Stickman extends Phaser.Physics.Arcade.Sprite {
             }
 
         }
+
+        
+        // Dance Combo Handling Test
+
+        this.scene.input.keyboard.createCombo([keyDanceUP, keyDanceDOWN, keyDanceLEFT, keyDanceRIGHT], { resetOnMatch: true });
+
+        this.scene.input.keyboard.createCombo([keyDanceUP, keyDanceDOWN, keyDanceLEFT, keyDanceLEFT, keyDanceRIGHT, keyDanceRIGHT, 
+            keyDanceDOWN, keyDanceUP, keyDanceDOWN, keyDanceUP, keyDanceLEFT, keyDanceRIGHT, keyDanceLEFT, keyDanceDOWN, keyDanceUP,
+            keyDanceUP, keyDanceDOWN, keyDanceUP], { resetOnMatch: true });
+
+        this.scene.input.keyboard.once('keycombomatch', ()=> {
+
+            console.log('Dance Combo!');
+
+        });
 
     }
 

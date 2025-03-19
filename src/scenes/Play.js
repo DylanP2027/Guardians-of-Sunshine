@@ -28,6 +28,11 @@ class Play extends Phaser.Scene {
         keyKICK = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
         keyABILITY = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
 
+        keyDanceUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+        keyDanceDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
+        keyDanceLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+        keyDanceRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+
         // Load tilemap and tilesets
         const map = this.add.tilemap('tilemapJSON');
         const floor_flame_tilesetImage = map.addTilesetImage('floorAndFlameSpriteSheet', 'floor_flame_tilesetImage');
